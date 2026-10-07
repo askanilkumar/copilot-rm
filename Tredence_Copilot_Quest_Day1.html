@@ -1,0 +1,1202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Workforce Copilot Quest · Day 1</title>
+<meta name="description" content="Interactive, gamified companion to Day 1 of the Copilot for Resource Management and Global Mobility program.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#F3F5FA; --surface:#FFFFFF; --surface-2:#EAEFF8; --ink:#14203A; --muted:#58657E; --line:#D6DDEA;
+  --accent:#2F5BEA; --accent-soft:#E2E9FE; --accent-ink:#FFFFFF;
+  --good:#0E8C7B; --good-soft:#DDF4EF; --bad:#C8413F; --bad-soft:#FBE6E5;
+  --gold:#C98A06; --gold-soft:#FDF1D4;
+  --r:#7549D4; --r-soft:#EEE7FD; --t:#2F5BEA; --t-soft:#E2E9FE; --c:#0E8C7B; --c-soft:#DDF4EF; --f:#C47A0A; --f-soft:#FDEFD6;
+  --shadow:0 1px 2px rgba(20,32,58,.06),0 6px 20px rgba(20,32,58,.06);
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Figtree","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0D1321; --surface:#151D2F; --surface-2:#1C2640; --ink:#E5EAF4; --muted:#9BA7BE; --line:#2A3551;
+  --accent:#7390FF; --accent-soft:#1F2B55; --accent-ink:#0D1321;
+  --good:#3CC5AE; --good-soft:#123A36; --bad:#F07A77; --bad-soft:#3F1D22;
+  --gold:#F2B83A; --gold-soft:#3A2E12;
+  --r:#AE8CFF; --r-soft:#2B2250; --t:#7390FF; --t-soft:#1F2B55; --c:#3CC5AE; --c-soft:#123A36; --f:#F2B04A; --f-soft:#3A2C12;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0D1321; --surface:#151D2F; --surface-2:#1C2640; --ink:#E5EAF4; --muted:#9BA7BE; --line:#2A3551;
+  --accent:#7390FF; --accent-soft:#1F2B55; --accent-ink:#0D1321;
+  --good:#3CC5AE; --good-soft:#123A36; --bad:#F07A77; --bad-soft:#3F1D22;
+  --gold:#F2B83A; --gold-soft:#3A2E12;
+  --r:#AE8CFF; --r-soft:#2B2250; --t:#7390FF; --t-soft:#1F2B55; --c:#3CC5AE; --c-soft:#123A36; --f:#F2B04A; --f-soft:#3A2C12;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.55;margin:0}
+img{max-width:100%}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.12;margin:0;text-wrap:balance;letter-spacing:-.01em}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible,.ph:focus-visible{outline:2.5px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1140px;margin:0 auto;padding-inline:20px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- HUD ---------- */
+.hud{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hud-in{display:flex;align-items:center;gap:20px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;min-width:0}
+.logo{display:grid;grid-template-columns:repeat(2,11px);gap:3px;flex:none}
+.logo i{width:11px;height:11px;border-radius:3px}
+.logo i:nth-child(1){background:var(--r)}.logo i:nth-child(2){background:var(--t)}.logo i:nth-child(3){background:var(--c)}.logo i:nth-child(4){background:var(--f)}
+.brand b{font-family:var(--display);font-size:18px;font-weight:800;display:block;line-height:1.1}
+.brand small{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap}
+.meter{flex:1;display:flex;align-items:center;gap:14px;justify-content:flex-end;min-width:0}
+.lvl{display:flex;align-items:center;gap:8px;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:4px 12px 4px 4px;font-weight:700;font-size:13px;white-space:nowrap}
+.lvl .n{background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:2px 9px;font-family:var(--display)}
+.bar{flex:1;max-width:260px;height:10px;border-radius:999px;background:var(--surface-2);overflow:hidden;position:relative}
+.bar i{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,var(--gold),#E9B53B);border-radius:999px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.xpt{font-variant-numeric:tabular-nums;white-space:nowrap;font-size:13px;color:var(--muted)}
+.xpt b{font-family:var(--display);font-size:22px;color:var(--gold);margin-right:2px}
+.xpt.bump b{animation:bump .5s}
+@keyframes bump{40%{transform:scale(1.25)}}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:0}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:0;background:none;padding:10px 14px 11px;font-weight:600;font-size:14.5px;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:7px}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab .k{font-size:11px;font-weight:700;background:var(--surface-2);color:var(--muted);border-radius:6px;padding:1px 6px}
+@media (max-width:760px){
+  .hud-in{flex-wrap:wrap;gap:8px 12px}
+  .brand small{display:none}
+  .meter{flex-basis:100%;justify-content:space-between}
+  .bar{max-width:none}
+  .lvl .nm{display:none}
+}
+
+main{padding-block:28px 64px}
+section.page{display:grid;gap:34px}
+.sec-h{display:grid;gap:6px;max-width:70ch}
+.sec-h h2{font-size:clamp(24px,3.2vw,32px);font-weight:800}
+.sec-h p{color:var(--muted)}
+
+/* ---------- Hero ---------- */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center}
+.hero h1{font-size:clamp(32px,5vw,54px);font-weight:800;letter-spacing:-.025em}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--r),var(--t) 40%,var(--c) 70%,var(--f));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lede{font-size:17px;color:var(--muted);margin-top:14px;max-width:48ch}
+.howxp{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;border-radius:999px;padding:4px 10px;background:var(--surface);border:1px solid var(--line)}
+.pill b{color:var(--gold)}
+.rtcf{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rt{--k:var(--t);--ks:var(--t-soft);text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:16px;display:grid;gap:6px;align-content:start;min-height:150px;position:relative;transition:transform .15s,border-color .15s}
+.rt:hover{transform:translateY(-2px);border-color:var(--k)}
+.rt .big{font-family:var(--display);font-size:40px;font-weight:800;color:var(--k);line-height:1}
+.rt .nm{font-weight:700;font-size:16px}
+.rt .q{color:var(--muted);font-size:14px}
+.rt .more{display:none;font-size:13.5px;border-top:1px dashed var(--line);padding-top:8px;margin-top:4px}
+.rt .more .ex{font-family:var(--mono);font-size:12.5px;background:var(--ks);color:var(--ink);border-radius:8px;padding:6px 8px;display:block;margin-bottom:6px}
+.rt.open{background:var(--ks);border-color:var(--k)}
+.rt.open .more{display:block}
+.rt .hint{position:absolute;top:14px;right:14px;font-size:11px;color:var(--muted)}
+.rt.open .hint{display:none}
+.rt[data-k="r"]{--k:var(--r);--ks:var(--r-soft)}.rt[data-k="c"]{--k:var(--c);--ks:var(--c-soft)}.rt[data-k="f"]{--k:var(--f);--ks:var(--f-soft)}
+.rt.open .more .ex{background:var(--surface)}
+@media (max-width:860px){.hero{grid-template-columns:1fr}}
+
+/* ---------- Cards / blocks ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px}
+.card.tight{padding:16px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:900px){.grid3{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.grid2,.grid3{grid-template-columns:1fr}}
+
+.seg{display:inline-flex;background:var(--surface-2);border-radius:12px;padding:4px;gap:4px}
+.seg button{border:0;background:none;padding:7px 14px;border-radius:9px;font-weight:600;font-size:14px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+
+.compare{display:grid;gap:14px}
+.compare-top{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+.colored{font-family:var(--mono);font-size:13.5px;line-height:1.75;background:var(--surface-2);border-radius:12px;padding:16px;white-space:pre-wrap}
+.colored span{border-radius:4px;padding:1px 3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.cr{background:var(--r-soft);color:var(--ink);box-shadow:inset 0 -2px 0 var(--r)}.ct{background:var(--t-soft);box-shadow:inset 0 -2px 0 var(--t)}.cc{background:var(--c-soft);box-shadow:inset 0 -2px 0 var(--c)}.cf{background:var(--f-soft);box-shadow:inset 0 -2px 0 var(--f)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12.5px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px}
+.outcome{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.outcome div{background:var(--surface-2);border-radius:12px;padding:10px 12px;font-size:13px}
+.outcome b{display:block;font-family:var(--display);font-size:22px}
+.outcome .up b{color:var(--good)}.outcome .dn b{color:var(--bad)}
+@media (max-width:640px){.outcome{grid-template-columns:1fr 1fr}}
+
+/* ---------- Questions ---------- */
+.q{display:grid;gap:12px;align-content:start}
+.q-h{display:flex;gap:10px;justify-content:space-between;align-items:flex-start}
+.q-h .t{font-weight:700;font-size:15.5px}
+.xpb{flex:none;font-size:12px;font-weight:700;color:var(--gold);background:var(--gold-soft);border-radius:999px;padding:3px 9px;font-variant-numeric:tabular-nums}
+.q.solved .xpb{color:var(--good);background:var(--good-soft)}
+.q .kind{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.q .stem-code{font-family:var(--mono);font-size:13px;background:var(--surface-2);border-radius:10px;padding:10px 12px;white-space:pre-wrap}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;font-size:14.5px;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .l{flex:none;width:24px;height:24px;border-radius:7px;background:var(--surface-2);display:grid;place-items:center;font-weight:700;font-size:12px}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.right .l{background:var(--good);color:var(--surface)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft);opacity:.75}
+.opt.picked{border-color:var(--accent);background:var(--accent-soft)}
+.opt:disabled{cursor:default}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.fb{font-size:14px;border-radius:10px;padding:10px 12px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--good-soft);color:var(--ink);border-left:0}
+.fb.no{background:var(--bad-soft)}
+.fb b{font-weight:700}
+.btn{border:0;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:14px;border-radius:10px;padding:9px 16px;display:inline-flex;align-items:center;gap:7px}
+.btn:hover{filter:brightness(1.07)}
+.btn.ghost{background:var(--surface-2);color:var(--ink)}
+.btn.sm{padding:6px 11px;font-size:13px;border-radius:8px}
+.btn:disabled{opacity:.5;cursor:default}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tagrow{display:grid;gap:8px}
+.tagitem{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:8px 8px 8px 12px;font-size:14px}
+.tagitem.right{border-color:var(--good);background:var(--good-soft)}
+.tagitem.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.tagbtns{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.tb{border:1.5px solid var(--line);background:var(--surface);border-radius:8px;min-width:34px;padding:4px 8px;font-weight:700;font-size:12.5px}
+.tb[aria-pressed="true"]{color:#fff;border-color:transparent;background:var(--accent)}
+.tb[data-v="R"][aria-pressed="true"]{background:var(--r)}.tb[data-v="T"][aria-pressed="true"]{background:var(--t)}.tb[data-v="C"][aria-pressed="true"]{background:var(--c)}.tb[data-v="F"][aria-pressed="true"]{background:var(--f)}
+.tb[data-v="Safe"][aria-pressed="true"]{background:var(--good)}.tb[data-v="Never"][aria-pressed="true"]{background:var(--bad)}
+@media (max-width:560px){.tagitem{grid-template-columns:1fr}.tagbtns{justify-content:flex-start}}
+.ord{display:grid;gap:10px}
+.ord-lane{min-height:48px;border:1.5px dashed var(--line);border-radius:12px;padding:8px;display:grid;gap:6px;align-content:start}
+.ord-lane:empty::before{content:attr(data-empty);color:var(--muted);font-size:13px;padding:6px}
+.chipb{text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;font-size:14px;display:flex;gap:8px}
+.chipb .no{font-weight:800;color:var(--accent);font-family:var(--display)}
+.chipb.right{border-color:var(--good);background:var(--good-soft)}
+.chipb.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.chk{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14.5px;cursor:pointer}
+.chk input{margin-top:3px;accent-color:var(--accent);width:16px;height:16px}
+.chk.right{border-color:var(--good);background:var(--good-soft)}
+.chk.wrong{border-color:var(--bad);background:var(--bad-soft)}
+
+/* ---------- Prompt types ---------- */
+.types{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.ty{border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:14px;text-align:left;display:grid;gap:6px;align-content:start;transition:border-color .12s,transform .12s}
+.ty:hover{transform:translateY(-2px);border-color:var(--accent)}
+.ty[aria-selected="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.ty .ico{width:34px;height:34px;border-radius:10px;background:var(--surface-2);display:grid;place-items:center;color:var(--accent)}
+.ty[aria-selected="true"] .ico{background:var(--surface)}
+.ty b{font-size:15px}
+.ty small{color:var(--muted);font-size:12.5px;line-height:1.35}
+.dots{display:flex;gap:4px}
+.dots i{width:18px;height:5px;border-radius:3px;background:var(--line)}
+.dots i.on{background:var(--good)}
+.tdetail{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.tdetail h3{font-size:26px;font-weight:800}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12.5px;font-weight:600;border-radius:999px;padding:4px 10px;background:var(--surface-2)}
+.tryit{background:var(--good-soft);border-radius:12px;padding:12px 14px;font-size:14px}
+.tryit ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
+.watch{font-size:14px;background:var(--gold-soft);border-radius:10px;padding:10px 12px}
+.watch b{color:var(--gold)}
+@media (max-width:860px){.tdetail{grid-template-columns:1fr}}
+
+/* ---------- Prompt blocks ---------- */
+.pbox{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface-2)}
+.pbar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 8px 6px 12px;border-bottom:1px solid var(--line);background:var(--surface)}
+.pbar .eyebrow{font-size:10.5px}
+.prompt{font-family:var(--mono);font-size:13.3px;line-height:1.7;white-space:pre-wrap;padding:14px;overflow-wrap:anywhere}
+.ph{background:var(--gold-soft);border-bottom:1.5px dashed var(--gold);border-radius:4px;padding:0 3px;outline:none;cursor:text}
+.ph.filled{background:var(--good-soft);border-bottom:1.5px solid var(--good)}
+.fu{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.fu .lab{font-size:12px;font-weight:700;color:var(--muted);margin-right:2px}
+.fuchip{border:1px dashed var(--accent);background:var(--surface);color:var(--accent);border-radius:999px;padding:5px 11px;font-size:13px;text-align:left}
+.fuchip:hover{background:var(--accent-soft)}
+.note{font-size:14px;background:var(--surface-2);border-radius:10px;padding:10px 12px;display:flex;gap:8px}
+.note.warn{background:var(--gold-soft)}
+.note svg{flex:none;margin-top:2px}
+
+/* ---------- Modules ---------- */
+.timeline{display:flex;gap:3px;border-radius:14px;overflow:hidden}
+.tl{border:0;padding:10px 8px;background:var(--surface);text-align:left;display:grid;gap:2px;min-width:0;position:relative;border-top:4px solid var(--line)}
+.tl span{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl b{font-family:var(--display);font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl.brk{background:repeating-linear-gradient(45deg,var(--surface),var(--surface) 6px,var(--surface-2) 6px,var(--surface-2) 12px);cursor:default}
+.tl.done{border-top-color:var(--good)}
+.tl[aria-current="true"]{border-top-color:var(--accent);background:var(--accent-soft)}
+.tl .ck{position:absolute;top:8px;right:6px;color:var(--good)}
+@media (max-width:760px){.tl span{display:none}.tl b{font-size:12.5px}.tl{padding:8px 4px}}
+.mod-h{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end}
+.mod-h h2{font-size:clamp(26px,3.6vw,38px);font-weight:800}
+.mod-h .time{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:600}
+.mod-h .oc{color:var(--muted);max-width:62ch;margin-top:8px}
+@media (max-width:700px){.mod-h{grid-template-columns:1fr}}
+details.ex{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+details.ex>summary{list-style:none;cursor:pointer;padding:16px 18px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center}
+details.ex>summary::-webkit-details-marker{display:none}
+details.ex .num{font-family:var(--mono);font-weight:600;font-size:13px;background:var(--accent-soft);color:var(--accent);border-radius:8px;padding:4px 8px}
+details.ex .st b{display:block;font-size:16px}
+details.ex .st small{color:var(--muted);font-size:13.5px}
+details.ex .chev{transition:transform .2s;color:var(--muted)}
+details.ex[open] .chev{transform:rotate(90deg)}
+details.ex .body{padding:0 18px 18px;display:grid;gap:12px}
+.exlist{display:grid;gap:12px}
+.welcome{display:grid;grid-template-columns:1.15fr 1fr;gap:24px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:26px}
+.welcome h1{font-size:clamp(28px,4.2vw,44px);font-weight:800;letter-spacing:-.02em;margin-top:8px}
+.welcome h1 em{font-style:normal;background:linear-gradient(90deg,var(--r),var(--t) 40%,var(--c) 70%,var(--f));-webkit-background-clip:text;background-clip:text;color:transparent}
+.welcome .lede{font-size:16.5px;color:var(--muted);margin-top:12px;max-width:52ch}
+.wl-r{background:var(--bg);border-radius:16px;padding:16px;display:grid;gap:8px}
+.wl-steps{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14.5px}
+@media (max-width:860px){.welcome{grid-template-columns:1fr;padding:18px}}
+.lv-b{display:inline-block;margin-top:6px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:6px;padding:2px 8px}
+.lv-b.live{background:var(--good);color:var(--surface)}.lv-b.time{background:var(--gold-soft);color:var(--gold)}.lv-b.opt{background:var(--surface-2);color:var(--muted)}
+.minin{width:58px;font:inherit;font-size:12.5px;padding:2px 6px;border:1.5px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
+.never{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.never div{background:var(--bad-soft);border-radius:10px;padding:10px 12px;font-size:14px;display:flex;gap:8px;align-items:flex-start}
+.never svg{flex:none;color:var(--bad);margin-top:2px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.duo div{border-radius:12px;padding:12px 14px;font-size:14px}
+.duo .y{background:var(--good-soft)}.duo .n{background:var(--bad-soft)}
+.duo b{display:block;font-family:var(--display);font-size:17px;margin-bottom:4px}
+@media (max-width:560px){.duo{grid-template-columns:1fr}}
+.modnav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* ---------- Tools ---------- */
+.builder{display:grid;grid-template-columns:1.05fr 1fr;gap:20px}
+@media (max-width:900px){.builder{grid-template-columns:1fr}}
+.fld{display:grid;gap:6px}
+.fld label{font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px}
+.fld label i{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-style:normal;color:#fff;font-family:var(--display);font-size:13px}
+textarea,input[type=text]{width:100%;font:inherit;font-size:14.5px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;resize:vertical}
+textarea:focus,input[type=text]:focus{border-color:var(--accent);outline:none}
+.qp{display:flex;flex-wrap:wrap;gap:5px}
+.qp button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 9px;font-size:12.5px}
+.qp button:hover{border-color:var(--accent);color:var(--accent)}
+.tog{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;cursor:pointer}
+.tog input{accent-color:var(--accent);margin-top:3px}
+.score{display:flex;gap:16px;align-items:center}
+.ring{--p:0;width:78px;height:78px;border-radius:50%;background:conic-gradient(var(--sc,var(--accent)) calc(var(--p)*1%),var(--surface-2) 0);display:grid;place-items:center;flex:none;transition:--p .4s}
+.ring::after{content:attr(data-v);width:60px;height:60px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:22px}
+.checks{display:grid;gap:4px;font-size:13px}
+.checks div{display:flex;gap:6px;align-items:center;color:var(--muted)}
+.checks div.ok{color:var(--ink)}
+.checks svg{flex:none}
+.checks div.ok svg{color:var(--good)}
+.scan-out{font-size:14.5px;line-height:1.8;background:var(--surface-2);border-radius:12px;padding:14px;white-space:pre-wrap;min-height:120px}
+mark{border-radius:4px;padding:1px 3px;color:var(--ink)}
+mark.pii{background:var(--bad-soft);box-shadow:inset 0 -2px 0 var(--bad)}
+mark.bias{background:var(--gold-soft);box-shadow:inset 0 -2px 0 var(--gold)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.calc{display:grid;grid-template-columns:1fr 1.1fr;gap:22px}
+@media (max-width:900px){.calc{grid-template-columns:1fr}}
+.sl{display:grid;gap:4px}
+.sl .top{display:flex;justify-content:space-between;font-size:14px}
+.sl .top b{font-variant-numeric:tabular-nums}
+.sl small{color:var(--muted);font-size:12px}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.kpi{background:var(--surface-2);border-radius:12px;padding:12px}
+.kpi b{font-family:var(--display);font-size:clamp(22px,3vw,30px);display:block;font-variant-numeric:tabular-nums;color:var(--good)}
+.kpi span{font-size:12.5px;color:var(--muted)}
+@media (max-width:520px){.kpis{grid-template-columns:1fr}}
+.bars{display:grid;gap:10px}
+.brow{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:center;font-size:13px}
+.btrack{display:grid;gap:3px}
+.bb{height:9px;border-radius:5px;background:var(--line);transition:width .4s}
+.bb.after{background:var(--good)}
+.bvals{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+@media (max-width:480px){.brow{grid-template-columns:1fr}}
+
+/* ---------- Library ---------- */
+.lib{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.lib{grid-template-columns:1fr}}
+.lc{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:10px;align-content:start}
+.lc-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.lc-h b{font-size:16px}
+.lc .n{font-family:var(--display);font-weight:800;color:var(--accent);margin-right:6px}
+.star{border:0;background:none;color:var(--muted);padding:4px;border-radius:8px;display:grid;place-items:center}
+.star[aria-pressed="true"]{color:var(--gold)}
+.star[aria-pressed="true"] svg{fill:currentColor}
+.cat{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:2px 7px;background:var(--surface-2);color:var(--muted)}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.filters button{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;font-weight:600;font-size:13.5px}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* ---------- Cheat ---------- */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-family:var(--display);font-size:clamp(22px,4vw,40px);font-weight:800}
+.formula span{padding:4px 14px;border-radius:12px}
+.formula .ar{color:var(--muted);font-weight:500;padding:0}
+.habits{counter-reset:h;display:grid;gap:10px}
+.habits div{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;font-size:15px}
+.habits div::before{counter-increment:h;content:counter(h);width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-family:var(--display);font-weight:800}
+.redlines{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.redlines div{border:2px solid var(--bad);border-radius:14px;padding:14px;font-size:14.5px}
+.redlines b{display:block;font-family:var(--display);font-size:18px;color:var(--bad);margin-bottom:4px}
+@media (max-width:760px){.redlines{grid-template-columns:1fr}}
+
+/* ---------- Progress ---------- */
+.ladder{display:grid;gap:8px}
+.rung{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface)}
+.rung .lv{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-family:var(--display);font-weight:800;background:var(--surface-2);color:var(--muted)}
+.rung.got .lv{background:var(--accent);color:var(--accent-ink)}
+.rung.cur{border-color:var(--accent);box-shadow:var(--shadow)}
+.rung small{color:var(--muted);display:block;font-size:12.5px}
+.rung .req{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.bdg{border:1.5px dashed var(--line);border-radius:14px;padding:14px 12px;text-align:center;display:grid;gap:6px;justify-items:center}
+.bdg .med{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);color:var(--muted)}
+.bdg b{font-size:14px}
+.bdg small{font-size:12px;color:var(--muted);line-height:1.35}
+.bdg.got{border-style:solid;border-color:var(--gold);background:var(--gold-soft)}
+.bdg.got .med{background:var(--gold);color:#fff}
+.modprog{display:grid;gap:8px}
+.mp{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;font-size:14px}
+.mp .c{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent)}
+.mp .t{height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden}
+.mp .t i{display:block;height:100%;background:var(--good);border-radius:4px}
+.mp .v{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.cert{border-radius:18px;padding:28px;background:linear-gradient(135deg,var(--r-soft),var(--t-soft) 45%,var(--c-soft));border:1px solid var(--line);display:grid;gap:10px;text-align:center;justify-items:center}
+.cert h3{font-size:clamp(24px,4vw,34px);font-weight:800}
+.cert .nm{font-family:var(--display);font-size:clamp(22px,3.4vw,30px);font-weight:700;border-bottom:2px solid var(--ink);padding:0 24px 4px;min-width:60%}
+.statrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px}
+.stat b{font-family:var(--display);font-size:28px;display:block;font-variant-numeric:tabular-nums}
+.stat span{font-size:12.5px;color:var(--muted)}
+@media (max-width:700px){.statrow{grid-template-columns:1fr 1fr}}
+
+/* ---------- Toast & overlay ---------- */
+.toasts{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:grid;gap:8px;z-index:60;pointer-events:none}
+.toast{background:var(--ink);color:var(--bg);border-radius:12px;padding:10px 14px;font-weight:600;font-size:14px;display:flex;gap:10px;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:tin .3s ease-out}
+.toast b{color:var(--gold);font-family:var(--display);font-size:17px}
+@keyframes tin{from{transform:translateY(12px);opacity:0}}
+.lvup{position:fixed;inset:0;z-index:70;display:grid;place-items:center;background:rgba(13,19,33,.55);padding:20px}
+.lvup .box{background:var(--surface);border-radius:22px;padding:30px 28px;max-width:420px;width:100%;text-align:center;display:grid;gap:10px;justify-items:center;animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+.lvup .big{width:88px;height:88px;border-radius:24px;background:linear-gradient(135deg,var(--r),var(--t));color:#fff;display:grid;place-items:center;font-family:var(--display);font-size:40px;font-weight:800}
+@keyframes pop{from{transform:scale(.8);opacity:0}}
+footer{border-top:1px solid var(--line);padding-block:20px;color:var(--muted);font-size:13px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hud">
+  <div class="wrap hud-in">
+    <a class="brand" href="#modules" data-go="modules"><span class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span><b>Workforce Copilot Quest</b><small>Day 1 · Copilot Chat for RM &amp; Global Mobility</small></span></a>
+    <div class="meter" aria-live="polite">
+      <div class="lvl"><span class="n" id="lvN">Lv 1</span><span class="nm" id="lvName">Prompt Rookie</span></div>
+      <div class="bar" role="progressbar" aria-label="Progress to next level" id="xpBar"><i></i></div>
+      <div class="xpt" id="xpT"><b id="xpNum">0</b>XP <span id="xpNext">· 100 to Lv 2</span></div>
+    </div>
+  </div>
+  <nav class="wrap tabs" role="tablist" aria-label="Sections" id="tabs"></nav>
+</header>
+
+<main class="wrap" id="main"></main>
+
+<footer><div class="wrap row" style="justify-content:space-between"><span>Prepared for the Tredence “Copilot for RM &amp; Global Mobility” program · Day 1 · DevPro Academy × UNext</span><span>Progress is saved in this browser only.</span></div></footer>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="lvup" id="lvup" hidden></div>
+
+<script>
+/* ================= ICONS ================= */
+const I={
+ copy:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
+ star:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>',
+ chev:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m9 6 6 6-6 6"/></svg>',
+ info:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>',
+ x:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+ ok:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+ dot:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/></svg>',
+ bolt:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',
+ target:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>',
+ layers:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></svg>',
+ user:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+ steps:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19h5v-5h5V9h5V4"/></svg>',
+ table:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></svg>',
+ loop:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg>',
+ ask:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M9.8 9.5a2.3 2.3 0 1 1 3.3 2.1c-.7.3-1.1.8-1.1 1.5M12 16h.01"/></svg>',
+ shield:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/></svg>',
+ medal:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="14" r="6"/><path d="M8.5 9 6 3h4l2 4 2-4h4l-2.5 6"/></svg>'
+};
+
+/* ================= STATE ================= */
+const LS='tredence-copilot-quest-day1-v1';
+function fresh(){return {v:1,xp:0,ans:{},mods:{},stars:[],saved:[],flags:{},first:0,right:0,wrong:0,name:'',badges:{},team:'rm'}}
+let S=(()=>{try{const s=JSON.parse(localStorage.getItem(LS));if(s&&s.v===1)return Object.assign(fresh(),s)}catch(e){}return fresh()})();
+function save(){try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}}
+
+const LEVELS=[
+ {xp:0,name:'Prompt Rookie',d:'You know Copilot exists.'},
+ {xp:100,name:'Prompt Apprentice',d:'You brief with Role, Task, Context, Format.'},
+ {xp:250,name:'Copilot Practitioner',d:'You pick the right prompt type for the job.'},
+ {xp:450,name:'Data Power User',d:'You profile, summarise and check data in chat.'},
+ {xp:700,name:'Copilot Champion',d:'You verify numbers and hold the guardrails.'},
+ {xp:1000,name:'Copilot Trailblazer',d:'The go-to person for Copilot in RM and Mobility.'}
+];
+function lvIdx(xp){let i=0;LEVELS.forEach((l,k)=>{if(xp>=l.xp)i=k});return i}
+
+/* ================= HELPERS ================= */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function el(html){const t=document.createElement('template');t.innerHTML=html.trim();return t.content.firstElementChild}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function seededPerm(id,n){let h=7;for(const ch of id)h=(h*31+ch.charCodeAt(0))>>>0;const a=[...Array(n).keys()];for(let i=n-1;i>0;i--){h=(h*1103515245+12345)>>>0;const j=h%(i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
+// Spread correct answers evenly across A–D (fixed per question, so letters stay stable between visits)
+let MCQ_ORDER=null;
+function mcqPerm(q){
+  if(q.o.length<3)return q.o.map((_,i)=>i);
+  if(!MCQ_ORDER){MCQ_ORDER={};ALLQ().filter(x=>x.type==='mcq'&&x.o.length>2).forEach((x,k)=>{const tgt=[0,2,3,1,1,3,2,0][k%8]%x.o.length;const rest=x.o.map((_,i)=>i).filter(i=>i!==x.a);rest.splice(tgt,0,x.a);MCQ_ORDER[x.id]=rest})}
+  return MCQ_ORDER[q.id]||q.o.map((_,i)=>i);
+}
+function toast(html,ms=2600){const t=el(`<div class="toast">${html}</div>`);$('#toasts').append(t);setTimeout(()=>t.remove(),ms)}
+function copyText(text,btn){
+  const done=()=>{toast('Copied. Now paste it into Copilot (Ctrl+V) and press Enter.');if(!btn)return;const o=btn.innerHTML;btn.innerHTML=I.ok+' Copied';setTimeout(()=>btn.innerHTML=o,1400)};
+  const fallback=()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.append(ta);ta.select();try{document.execCommand('copy')}catch(e){}ta.remove();done()};
+  try{navigator.clipboard.writeText(text).then(done,fallback)}catch(e){fallback()}
+  award('first-copy',10,'First prompt copied');
+}
+
+/* ================= XP ENGINE ================= */
+function award(key,xp,why){
+  if(S.flags[key])return false;
+  S.flags[key]=1;const before=lvIdx(S.xp);S.xp+=xp;save();
+  toast(`<b>+${xp} XP</b><span>${esc(why)}</span>`);
+  hud(true);checkBadges();
+  const after=lvIdx(S.xp);if(after>before)levelUp(after);
+  return true;
+}
+function hud(bump){
+  const i=lvIdx(S.xp),L=LEVELS[i],N=LEVELS[i+1];
+  $('#lvN').textContent='Lv '+(i+1);$('#lvName').textContent=L.name;$('#xpNum').textContent=S.xp;
+  const pct=N?((S.xp-L.xp)/(N.xp-L.xp))*100:100;
+  $('#xpBar i').style.width=pct+'%';$('#xpBar').setAttribute('aria-valuenow',Math.round(pct));
+  $('#xpNext').textContent=N?`· ${N.xp-S.xp} to Lv ${i+2}`:'· max level';
+  if(bump){const t=$('#xpT');t.classList.remove('bump');void t.offsetWidth;t.classList.add('bump')}
+  if(current==='progress')renderProgress();
+}
+function levelUp(i){
+  const L=LEVELS[i],box=$('#lvup');
+  box.innerHTML=`<div class="box" role="dialog" aria-label="Level up"><div class="big">${i+1}</div><div class="eyebrow">Level up</div><h3 style="font-size:28px">${L.name}</h3><p class="muted">${L.d}</p><button class="btn" id="lvClose">Keep going</button></div>`;
+  box.hidden=false;$('#lvClose').focus();$('#lvClose').onclick=()=>box.hidden=true;
+  box.onclick=e=>{if(e.target===box)box.hidden=true};
+}
+
+/* ================= QUESTIONS ================= */
+const QXP={mcq:20,multi:30,tag:40,order:30};
+function qShell(q,kind){
+  const xp=q.xp||QXP[q.type];
+  return el(`<div class="q" data-q="${q.id}"><div class="q-h"><div><div class="kind">${kind}</div><div class="t">${q.q}</div></div><span class="xpb">+${xp} XP</span></div></div>`);
+}
+function solve(q,node,attempts){
+  const xp=q.xp||QXP[q.type],got=attempts===0?xp:Math.max(5,Math.round(xp/2));
+  S.ans[q.id]={done:1,first:attempts===0};S.right++;if(attempts===0)S.first++;save();
+  node.classList.add('solved');node.querySelector('.xpb').textContent=attempts===0?`+${got} XP earned`:`+${got} XP (2nd try)`;
+  award('q:'+q.id,got,attempts===0?'Correct on first try':'Correct');
+  const fb=node.querySelector('.fb');fb.className='fb ok show';fb.innerHTML='<b>Correct.</b> '+q.why;
+  refreshMeta();
+}
+function wrongOnce(q,node,msg){
+  S.wrong++;save();node.classList.remove('shake');void node.offsetWidth;node.classList.add('shake');
+  const fb=node.querySelector('.fb');fb.className='fb no show';fb.innerHTML='<b>Not quite.</b> '+(msg||'Have another go. Half XP is still on the table.');
+}
+function renderQ(q){
+  const solved=S.ans[q.id]&&S.ans[q.id].done;
+  let node;
+  if(q.type==='mcq'){
+    node=qShell(q,q.kind||'Quick check');
+    if(q.code)node.append(el(`<div class="stem-code">${esc(q.code)}</div>`));
+    const box=el('<div class="opts"></div>');let tries=0;
+    mcqPerm(q).forEach((i,pos)=>{const t=q.o[i];
+      const b=el(`<button class="opt"><span class="l">${'ABCDE'[pos]}</span><span>${t}</span></button>`);
+      if(solved){b.disabled=true;if(i===q.a)b.classList.add('right')}
+      b.onclick=()=>{
+        if(node.classList.contains('solved'))return;
+        if(i===q.a){b.classList.add('right');$$('.opt',box).forEach(x=>x.disabled=true);solve(q,node,tries)}
+        else{b.classList.add('wrong');b.disabled=true;tries++;wrongOnce(q,node,q.no&&q.no[i])}
+      };box.append(b)});
+    node.append(box);
+  }
+  if(q.type==='multi'){
+    node=qShell(q,q.kind||'Select all that apply');
+    if(q.code)node.append(el(`<div class="stem-code">${esc(q.code)}</div>`));
+    const box=el('<div class="opts"></div>');let tries=0;
+    seededPerm(q.id,q.o.length).forEach(i=>{const t=q.o[i];
+      const lab=el(`<label class="chk"><input type="checkbox" id="${q.id}-${i}" data-i="${i}"><span>${t}</span></label>`);
+      if(solved){lab.querySelector('input').checked=q.a.includes(i);lab.querySelector('input').disabled=true;if(q.a.includes(i))lab.classList.add('right')}
+      box.append(lab)});
+    const oi=x=>+x.dataset.i;
+    const go=el('<div class="row"><button class="btn sm">Check answer</button></div>');
+    go.querySelector('button').onclick=()=>{
+      if(node.classList.contains('solved'))return;
+      const picks=$$('input',box).filter(x=>x.checked).map(oi);
+      const ok=picks.length===q.a.length&&picks.every(i=>q.a.includes(i));
+      $$('.chk',box).forEach(x=>x.classList.remove('wrong'));
+      if(ok){$$('.chk',box).forEach(x=>{const inp=x.querySelector('input');if(q.a.includes(oi(inp)))x.classList.add('right');inp.disabled=true});go.remove();solve(q,node,tries)}
+      else{tries++;const off=$$('input',box).filter(x=>x.checked!==q.a.includes(oi(x))).length;wrongOnce(q,node,`${off} ${off===1?'choice is':'choices are'} off. Adjust and check again.`)}
+    };
+    node.append(box);if(!solved)node.append(go);
+  }
+  if(q.type==='tag'){
+    node=qShell(q,q.kind||'Tag each part');
+    const labels=q.labels||['R','T','C','F'];
+    if(q.legend)node.append(el(`<div class="legend">${q.legend}</div>`));
+    const box=el('<div class="tagrow"></div>');let tries=0;const order=solved?q.items.map((_,i)=>i):shuffle(q.items.map((_,i)=>i));
+    order.forEach(i=>{
+      const it=q.items[i];
+      const row=el(`<div class="tagitem" data-i="${i}"><span>${esc(it[0])}</span><div class="tagbtns">${labels.map(l=>`<button class="tb" data-v="${l}" aria-pressed="false">${l}</button>`).join('')}</div></div>`);
+      if(solved){row.classList.add('right');$$('.tb',row).forEach(b=>{b.disabled=true;if(b.dataset.v===it[1])b.setAttribute('aria-pressed','true')})}
+      $$('.tb',row).forEach(b=>b.onclick=()=>{if(node.classList.contains('solved'))return;$$('.tb',row).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');row.classList.remove('wrong','right')});
+      box.append(row)});
+    const go=el('<div class="row"><button class="btn sm">Check tags</button></div>');
+    go.querySelector('button').onclick=()=>{
+      if(node.classList.contains('solved'))return;
+      let bad=0,miss=0;
+      $$('.tagitem',box).forEach(r=>{const p=$('.tb[aria-pressed="true"]',r);const want=q.items[+r.dataset.i][1];if(!p){miss++;return}r.classList.toggle('right',p.dataset.v===want);r.classList.toggle('wrong',p.dataset.v!==want);if(p.dataset.v!==want)bad++});
+      if(miss){const fb=node.querySelector('.fb');fb.className='fb no show';fb.innerHTML=`Tag all ${q.items.length} lines first (${miss} left).`;return}
+      if(!bad){$$('.tb',box).forEach(b=>b.disabled=true);go.remove();solve(q,node,tries)}else{tries++;wrongOnce(q,node,`${bad} ${bad===1?'line is':'lines are'} tagged wrong (in red). Re-tag and check again.`)}
+    };
+    node.append(box);if(!solved)node.append(go);
+  }
+  if(q.type==='order'){
+    node=qShell(q,q.kind||'Put in order');
+    const wrap=el('<div class="ord"><div class="eyebrow">Tap in the right order</div><div class="ord-lane pool" data-empty="All placed."></div><div class="eyebrow">Your sequence</div><div class="ord-lane seq" data-empty="Tap items above to add them here."></div></div>');
+    const pool=$('.pool',wrap),seq=$('.seq',wrap);let tries=0;
+    const mk=i=>{const b=el(`<button class="chipb" data-i="${i}"><span class="no"></span><span>${esc(q.items[i])}</span></button>`);
+      b.onclick=()=>{if(node.classList.contains('solved'))return;$$('.chipb',wrap).forEach(x=>x.classList.remove('wrong','right'));(b.parentElement===pool?seq:pool).append(b);num()};return b};
+    const num=()=>{$$('.chipb',pool).forEach(b=>b.querySelector('.no').textContent='');$$('.chipb',seq).forEach((b,k)=>b.querySelector('.no').textContent=k+1)};
+    if(solved){q.items.forEach((_,i)=>seq.append(mk(i)));$$('.chipb',seq).forEach(b=>{b.classList.add('right');b.disabled=true});num()}
+    else{let o=shuffle(q.items.map((_,i)=>i));if(o.every((v,k)=>v===k))o=o.reverse();o.forEach(i=>pool.append(mk(i)))}
+    const go=el('<div class="row"><button class="btn sm">Check order</button><button class="btn sm ghost">Reset</button></div>');
+    const [chk,rst]=$$('button',go);
+    rst.onclick=()=>{$$('.chipb',seq).forEach(b=>{b.classList.remove('wrong','right');pool.append(b)});num()};
+    chk.onclick=()=>{
+      if(node.classList.contains('solved'))return;
+      const s=$$('.chipb',seq);
+      if(s.length<q.items.length){const fb=node.querySelector('.fb');fb.className='fb no show';fb.textContent='Place every item first.';return}
+      let bad=0;s.forEach((b,k)=>{const ok=+b.dataset.i===k;b.classList.toggle('right',ok);b.classList.toggle('wrong',!ok);if(!ok)bad++});
+      if(!bad){s.forEach(b=>b.disabled=true);go.remove();solve(q,node,tries)}else{tries++;wrongOnce(q,node,`${bad} ${bad===1?'step is':'steps are'} out of place. Tap them to move back and retry.`)}
+    };
+    node.append(wrap);if(!solved)node.append(go);
+  }
+  node.append(el('<div class="fb"></div>'));
+  if(solved){node.classList.add('solved');node.querySelector('.xpb').textContent='Solved';const fb=node.querySelector('.fb');fb.className='fb ok show';fb.innerHTML='<b>Solved.</b> '+q.why}
+  return node;
+}
+
+/* ================= PROMPT BLOCKS ================= */
+function promptHTML(t){
+  // [x] = editable placeholder; ⟦x⟧ = literal brackets shown as-is
+  return esc(t).replace(/\[([^\]\n]+)\]/g,(m,x)=>`<span class="ph" contenteditable="true" spellcheck="false" role="textbox" aria-label="Fill in ${x}" data-ph="[${x}]">[${x}]</span>`).replace(/⟦/g,'[').replace(/⟧/g,']');
+}
+function promptBox(text,label,opts={}){
+  const n=el(`<div class="pbox"><div class="pbar"><span class="eyebrow">${label||'Prompt'} <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:500">· click the yellow brackets to fill them</span></span><div class="row"><button class="btn sm ghost" data-a="save" title="Save to My Library">${I.star} Save</button><button class="btn sm" data-a="copy">${I.copy} Copy</button></div></div><div class="prompt">${promptHTML(text)}</div></div>`);
+  if(!/\[/.test(text.replace(/⟦[^⟧]*⟧/g,'')))$('.pbar .muted',n).remove();
+  // Remember placeholder fills per prompt so edits survive tab switches and reloads
+  const key=opts.key,phs=$$('.ph',n);
+  if(!S.fills)S.fills={};
+  if(key&&S.fills[key])phs.forEach((p,k)=>{const v=S.fills[key][k];if(v){p.textContent=v;p.classList.add('filled')}});
+  phs.forEach(p=>p.addEventListener('blur',()=>setTimeout(()=>{if(key){S.fills[key]=phs.map(x=>x.classList.contains('filled')?x.textContent:'');save()}},0)));
+  $$('.ph',n).forEach(p=>{
+    p.addEventListener('focus',()=>{if(!p.classList.contains('filled')){const r=document.createRange();r.selectNodeContents(p);const s=getSelection();s.removeAllRanges();s.addRange(r)}});
+    p.addEventListener('blur',()=>{const v=p.textContent.trim();if(!v||v===p.dataset.ph){p.textContent=p.dataset.ph;p.classList.remove('filled')}else{p.classList.add('filled');award('first-fill',10,'First placeholder filled')}});
+    p.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();p.blur()}});
+  });
+  const get=()=>$('.prompt',n).textContent;
+  $('[data-a=copy]',n).onclick=e=>copyText(get(),e.currentTarget);
+  const sv=$('[data-a=save]',n);
+  if(opts.noSave)sv.remove();else sv.onclick=()=>{S.saved.push({t:opts.title||label||'Saved prompt',p:get(),at:Date.now()});save();sv.innerHTML=I.ok+' Saved';award('first-save',10,'Started your prompt library');checkBadges()};
+  return n;
+}
+function followChips(list){
+  const n=el(`<div class="fu"><span class="lab">↻ Follow-ups (click to copy):</span></div>`);
+  list.forEach(f=>{const b=el(`<button class="fuchip">${esc(f)}</button>`);b.onclick=()=>copyText(f,null)||toast('Follow-up copied');n.append(b)});return n;
+}
+function note(txt,warn){return el(`<div class="note ${warn?'warn':''}">${I.info}<span>${txt}</span></div>`)}
+
+/* ================= DATA: PROMPT LAB ================= */
+const RTCF=[
+ {k:'r',L:'R',nm:'Role',q:'Who should Copilot be?',ex:'Act as a senior workforce-management analyst at a data analytics company.',skip:'Skip it and you get a generic, middle-of-the-road voice.'},
+ {k:'t',L:'T',nm:'Task',q:'What exactly do you want produced?',ex:'Analyse the attached utilization file for August and September.',skip:'Skip it and Copilot guesses the deliverable. One clear verb: analyse, summarise, compare, list, draft.'},
+ {k:'c',L:'C',nm:'Context',q:'What can’t it guess?',ex:'Utilization = billable ÷ available hours. Audience: Head of RM. Never guess missing values.',skip:'Skip it and the output fits no one in particular, and may quietly invent numbers.'},
+ {k:'f',L:'F',nm:'Format',q:'What shape should the output take?',ex:'5 bullets, one table by account, under 250 words.',skip:'Skip it and you get a wall of text to reformat.'}
+];
+const ANATOMY=[
+ {id:'a1',type:'tag',q:'Tag each line of this variance-commentary prompt as Role, Task, Context or Format.',kind:'Hands-on · RTCF tagging',
+  legend:'<span><i style="background:var(--r)"></i>R Role</span><span><i style="background:var(--t)"></i>T Task</span><span><i style="background:var(--c)"></i>C Context</span><span><i style="background:var(--f)"></i>F Format</span>',
+  items:[['Act as a senior workforce analyst at an IT services company.','R'],['Write executive commentary on the September utilization movement in the table below.','T'],['Audience: Head of Resource Management, who has two minutes.','C'],['Separate facts from the data from your own hypotheses.','C'],['Give 4 bullets and one recommended action. Under 120 words.','F']],
+  why:'Context carries the audience and the rule that matters (facts vs hypotheses). Format is the shape: 4 bullets, one action, a word limit.'},
+ {id:'a2',type:'order',q:'Assemble this bench-categorisation prompt in RTCF order.',kind:'Hands-on · Build the prompt',
+  items:['Act as a workforce-planning analyst for a resource management team.','Categorise the bench list below into deployable, reskill, redeploy and high-risk.','Use only the columns provided. Do not infer anything from personal attributes.','Format: a table with Category, Employee ID and a one-line reason. Under 200 words.'],
+  why:'Role sets the expertise, Task names the deliverable, Context sets the guardrail (use only the columns provided), Format fixes the shape.'},
+ {id:'a3',type:'mcq',q:'Which RTCF part is thin or missing in this prompt?',kind:'Hands-on · Spot the gap',
+  code:'Act as an immigration operations analyst. List the visa cases that expire soon in the attached tracker. Format: a table with case ID, destination country and expiry date, sorted by date.',
+  o:['Role','Task','Context','Format'],a:2,no:{0:'The role is there: immigration operations analyst.',1:'The task is there: list the cases that expire soon.',3:'The format is there: a table, three columns, sorted by date.'},
+  why:'“Soon” is undefined and there is no as-of date. Add: “As of 7 Oct 2026, expiring within 60 days, excluding cases with status Renewal filed.” Context is what makes the answer checkable.'}
+];
+const STRONG=[
+ ['r','Act as a senior workforce-management analyst at a data analytics company.\n'],
+ ['t','Analyse the attached utilization file for August and September 2026 (30 associates).\n'],
+ ['c','Context: Utilization = billable hours ÷ available hours. The audience is the Head of Resource Management. List data errors first, and never guess missing values.\n'],
+ ['f','Format: a 5-bullet summary, a table of average utilization by account and month, then a list of data problems. Under 250 words plus the tables.']
+];
+const TYPES=[
+ {id:'zero',ic:'bolt',nm:'Zero-shot',tag:'Ask directly, no examples',
+  what:'A clear, direct instruction with no examples. The fastest prompt type. It works well when the task is common and the output is short.',
+  use:['Quick table summaries','First-draft emails','Rewording a paragraph','Meeting-note clean-up'],
+  tpl:'[Verb] [what] for [audience]. [Length / shape].',
+  ex:'Summarise the table below in 5 bullets for the Head of Resource Management. Plain English, under 80 words.\nTable: [paste]',
+  look:'5 short bullets in plain English, under 80 words. Too long? Follow up in the same chat: “Make it shorter.”',
+  watch:'Zero-shot is where vague prompts fail. Always add audience and length, even in one line.',
+  qs:[
+   {id:'t1a',type:'mcq',q:'Which of these is a zero-shot prompt?',o:['“Here are two commentary lines we liked: [1] [2]. Write a third in the same style for Telecom-1.”','“List 5 checks to run on a utilization file before analysing it, each under 15 words.”','“Work step by step: first list the checks, then run them, then calculate the averages.”','“Before you start, ask me 3 questions about the audience.”'],a:1,no:{0:'That one shows examples, so it’s few-shot.',2:'That’s step-by-step prompting.',3:'That’s a flipped-interaction prompt.'},why:'A direct instruction with no examples. It still names the count and the length, which is why it works.'},
+   {id:'t1b',type:'mcq',q:'“Summarise this data.” returns a vague paragraph. What’s the best single upgrade?',o:['“Summarise this data. Make it really good.”','“Summarise this utilization table in 5 bullets for the Head of RM. Name the account with the biggest change. Under 80 words.”','“Summarise this data in a lot more detail.”','Open a new chat and paste the same prompt again.'],a:1,no:{0:'Adjectives like “really good” give Copilot nothing to act on.',2:'More detail without direction gives you a longer vague paragraph.',3:'Same prompt, same result.'},why:'It adds the audience, the shape, a specific question and a length. Four small facts, a completely different output.'}
+  ]},
+ {id:'few',ic:'layers',nm:'Few-shot',tag:'Show 1–3 examples of what good looks like',
+  what:'You paste one to three examples of the output you want, and Copilot copies their style, length and structure.',
+  use:['Executive commentary in house style','Weekly status lines','Alert wording for expiring cases','Query-reply templates'],
+  tpl:'Here are [2] examples of [output] we like:\n1) [example]\n2) [example]\nWrite [n] more in the same style for: [items].',
+  ex:'Here are 2 commentary lines we like:\n1) “Utilization held at 78% (+1 pt); Retail-1 slipped 6 pts on two early roll-offs.”\n2) “Bench grew by 9, mostly Python-skilled; 4 have open demands within two weeks.”\nWrite 3 more in the same style for: [Bank-1], [Pharma-1], [Telecom-1], using the table below.\nTable: [paste]',
+  look:'Three new lines that match the length, tone and number format of the two examples, using only numbers from your table.',
+  watch:'Use fictional or anonymised examples. A real employee’s details in an example are still personal data.',
+  qs:[
+   {id:'t2a',type:'mcq',q:'You need 20 reminder messages for expiring visas in your team’s house style. Best technique?',o:['Zero-shot: “Write 20 reminder messages.”','Few-shot: paste 2–3 of your best reminders, then ask for 20 more in the same style.','Step-by-step reasoning','Add more adjectives: “polite, friendly, helpful, clear”'],a:1,no:{0:'You’ll get 20 messages, but not in your style.',2:'Reasoning helps analysis, not tone matching.',3:'Adjectives describe style; examples show it.'},why:'Examples are the quickest way to transfer a house style. Copilot matches length, tone and structure.'},
+   {id:'t2b',type:'multi',q:'What makes few-shot examples effective?',o:['They match the exact format you want back','They differ enough to show the pattern, not one fixed template','They contain real employee names so the output feels authentic','You tell Copilot to use only facts from your data, not from the examples'],a:[0,1,3],why:'Match the format, show some variety, and keep the facts separate from the style. Real personal data never belongs in examples.'}
+  ]},
+ {id:'step',ic:'steps',nm:'Step-by-step',tag:'Make Copilot show its working',
+  what:'You ask Copilot to work in stages and show each stage. For data work, it makes errors easier to spot, because you can check each step.',
+  use:['Data checks before analysis','Variance explanations','Multi-condition filters','Anything with a calculation'],
+  tpl:'Work step by step. Step 1: [check]. Step 2: [calculate]. Step 3: [conclude]. Show each step.',
+  ex:'Work step by step on the attached file.\nStep 1: list the data checks you will run (blanks, duplicates, impossible values).\nStep 2: run them and report what you found. Do not fix anything.\nStep 3: only then calculate average utilization by account for each month.\nShow each step with its result.',
+  look:'Three labelled stages. The data problems appear in step 2, before any averages are calculated.',
+  watch:'Showing the steps does not make the numbers right. You still recompute two of them yourself.',
+  qs:[
+   {id:'t3a',type:'mcq',q:'Why ask Copilot to run data checks before it calculates averages?',o:['It makes the answer sound more confident','Bad rows (duplicates, blanks) otherwise get averaged in silently','It makes the response shorter','It stops Copilot from using the file'],a:1,no:{0:'Confidence is not accuracy.',2:'Usually it makes it longer.',3:'It still uses the file; it just checks it first.'},why:'Duplicates and blanks distort averages without any visible warning. Checking first makes the problems visible.'},
+   {id:'t3b',type:'order',q:'Put these verification steps in a sensible order.',items:['Ask Copilot to list data problems before analysing','Ask for averages by account, excluding the problem rows','Recompute two numbers yourself in Excel','Send the summary only after a human has reviewed it'],why:'Check the data, analyse, verify independently, and a human reviews last.'}
+  ]},
+ {id:'flip',ic:'ask',nm:'Flipped interaction',tag:'Let Copilot interview you first',
+  what:'You ask Copilot to question you before it drafts. Useful when you’re not sure what context matters.',
+  use:['Monthly leadership summaries','New report layouts','Unfamiliar compliance topics','Complex stakeholder emails'],
+  tpl:'[Task]. Before you start, ask me up to 3 questions if anything is unclear. Then wait for my answers.',
+  ex:'I need a monthly workforce summary for our leadership team.\nBefore you start, ask me up to 3 questions about anything you need to know. Then wait for my answers.',
+  look:'Copilot asks you up to 3 questions and stops. Answer them in the same chat, then it drafts.',
+  watch:'Add “then wait for my answers”, or it may ask and draft in one go.',
+  qs:[
+   {id:'t4a',type:'mcq',q:'When is “ask me up to 3 questions first” most valuable?',o:['Fixing a typo','Designing a new monthly leadership report when you’re unsure what details matter','Translating “thank you”','Writing a one-line reminder'],a:1,no:{0:'Nothing to clarify.',2:'Nothing to clarify.',3:'Just write it.'},why:'Open-ended, high-context work benefits most. Copilot surfaces the context you forgot to give.'},
+   {id:'t4b',type:'mcq',q:'Copilot replies: “Which accounts matter most, and who reads this?” What do you do?',o:['Start a new chat','Answer in the same chat, then let it draft','Ignore it and repeat the original prompt','Say “you decide”'],a:1,no:{0:'You lose the thread.',2:'You’ll get the same questions back.',3:'Then it guesses, which is what you were avoiding.'},why:'Answering in the same thread gives Copilot exactly the context it asked for.'}
+  ]},
+ {id:'iter',ic:'loop',nm:'Iterate & refine',tag:'Improve it in the same chat',
+  what:'The first answer is a draft. Stay in the same chat and say what to change and what to keep. Change one thing at a time.',
+  use:['Shorten for leadership','Switch to a table','Make it checkable','Adjust tone for an email'],
+  tpl:'[Keep: …]. Change: [one thing]. Do not change: [what stays].',
+  ex:'Keep the table and the numbers exactly as they are.\nChange: shorten the commentary to 3 bullets and add one recommended action.\nThen list any number you are not certain about.',
+  look:'The table is unchanged, the commentary is shorter, and Copilot lists the numbers to double-check.',
+  watch:'Change one thing per follow-up so you can see what each change did. Run it right after an analysis in the same chat.',
+  qs:[
+   {id:'t5a',type:'mcq',q:'Your first summary is too long and too technical for leadership. Best next move?',o:['Open a new chat and retype everything','In the same chat: “Make it 40% shorter and plain English. Keep the table and every number as is.”','Accept it and rewrite by hand for an hour','Reply “try again”'],a:1,no:{0:'You lose all the context you built up.',2:'That’s the time Copilot should save you.',3:'Copilot doesn’t know what to change.'},why:'Stay in the chat, say what to change and what to keep. That’s the core habit of iterating.'},
+   {id:'t5b',type:'order',q:'Order a smart refinement loop for a leadership summary.',items:['Draft the summary with a full RTCF prompt','Ask Copilot to list every number it is unsure about','Ask for a 3-line version for an email','A human verifies the numbers and approves'],why:'Get the core right, surface the doubts, make the derivatives, and a human always signs off last.'}
+  ]}
+];
+const ADDONS=['Before you start, ask me up to 3 questions if anything is unclear.','Show your calculation for every number you report.','Flag any assumptions you made at the end.','List any rows you excluded and why.'];
+
+/* ================= SAMPLE DATA (fictional) ================= */
+const DATA={
+ rm:{file:'utilization_monthly.csv',label:'utilization_monthly.csv',csv:"emp_id,grade,skill,account,location,month,billable_hrs,available_hrs,utilization_pct\nEMP-1001,Lead,SQL,Retail-1,Chennai,2026-08,155,160,96.9\nEMP-1001,Lead,SQL,Retail-1,Chennai,2026-09,119,160,74.4\nEMP-1002,Senior Analyst,Power BI,Bank-1,Bengaluru,2026-08,130,152,85.5\nEMP-1002,Senior Analyst,Power BI,Bank-1,Bengaluru,2026-09,129,152,84.9\nEMP-1003,Lead,Cloud,Pharma-1,Pune,2026-08,137,152,90.1\nEMP-1003,Lead,Cloud,Pharma-1,Pune,2026-09,112,160,70.0\nEMP-1004,Analyst,SQL,Logistics-1,Hyderabad,2026-08,52,160,32.5\nEMP-1004,Analyst,SQL,Logistics-1,Hyderabad,2026-09,107,160,66.9\nEMP-1005,Senior Analyst,Power BI,Telecom-1,Chennai,2026-08,89,160,55.6\nEMP-1005,Senior Analyst,Power BI,Telecom-1,Chennai,2026-09,101,168,60.1\nEMP-1006,Lead,Cloud,Retail-1,Bengaluru,2026-08,143,160,89.4\nEMP-1006,Lead,Cloud,Retail-1,Bengaluru,2026-09,137,168,81.5\nEMP-1007,Analyst,SQL,Bank-1,Pune,2026-08,134,168,79.8\nEMP-1007,Analyst,SQL,Bank-1,Pune,2026-09,151,152,99.3\nEMP-1007,Analyst,SQL,Bank-1,Pune,2026-09,151,152,99.3\nEMP-1008,Lead,Power BI,Pharma-1,Hyderabad,2026-08,124,152,81.6\nEMP-1008,Lead,Power BI,Pharma-1,Hyderabad,2026-09,122,160,76.2\nEMP-1009,Lead,Cloud,Logistics-1,Chennai,2026-08,120,160,75.0\nEMP-1009,Lead,Cloud,Logistics-1,Chennai,2026-09,70,160,43.8\nEMP-1010,Analyst,SQL,Telecom-1,Bengaluru,2026-08,90,160,56.2\nEMP-1010,Analyst,SQL,Telecom-1,Bengaluru,2026-09,122,168,72.6\nEMP-1011,Senior Analyst,Power BI,Retail-1,Pune,2026-08,122,160,76.2\nEMP-1011,Senior Analyst,Power BI,Retail-1,Pune,2026-09,110,152,72.4\nEMP-1012,Lead,Cloud,Bank-1,Hyderabad,2026-08,119,160,74.4\nEMP-1012,Lead,Cloud,Bank-1,Hyderabad,2026-09,,160,\nEMP-1013,Analyst,SQL,Pharma-1,Chennai,2026-08,127,160,79.4\nEMP-1013,Analyst,SQL,Pharma-1,Chennai,2026-09,124,160,77.5\nEMP-1014,Senior Analyst,Power BI,Logistics-1,Bengaluru,2026-08,130,160,81.2\nEMP-1014,Senior Analyst,Power BI,Logistics-1,Bengaluru,2026-09,107,160,66.9\nEMP-1015,Lead,Cloud,Telecom-1,Pune,2026-08,107,160,66.9\nEMP-1015,Lead,Cloud,Telecom-1,Pune,2026-09,119,160,74.4\nEMP-1016,Analyst,SQL,Retail-1,Hyderabad,2026-08,142,160,88.8\nEMP-1016,Analyst,SQL,Retail-1,Hyderabad,2026-09,66,160,41.2\nEMP-1017,Senior Analyst,Power BI,Bank-1,Chennai,2026-08,112,160,70.0\nEMP-1017,Senior Analyst,Power BI,Bank-1,Chennai,2026-09,127,160,79.4\nEMP-1018,Lead,Cloud,Pharma-1,Bengaluru,2026-08,125,160,78.1\nEMP-1018,Lead,Cloud,Pharma-1,Bengaluru,2026-09,133,152,87.5\nEMP-1019,Analyst,SQL,Logistics-1,Pune,2026-08,190,160,118.8\nEMP-1019,Analyst,SQL,Logistics-1,Pune,2026-09,117,160,73.1\nEMP-1020,Senior Analyst,Power BI,Telecom-1,Hyderabad,2026-08,109,160,68.1\nEMP-1020,Senior Analyst,Power BI,Telecom-1,Hyderabad,2026-09,128,168,76.2\nEMP-1021,Lead,Cloud,Retail-1,Chennai,2026-08,143,152,94.1\nEMP-1021,Lead,Cloud,Retail-1,Chennai,2026-09,113,160,70.6\nEMP-1022,Lead,SQL,Bank-1,Bengaluru,2026-08,103,152,67.8\nEMP-1022,Lead,SQL,Bank-1,Bengaluru,2026-09,146,160,91.2\nEMP-1023,Senior Analyst,Power BI,Pharma-1,Pune,2026-08,120,160,75.0\nEMP-1023,Senior Analyst,Power BI,Pharma-1,Pune,2026-09,144,160,85.0\nEMP-1024,Lead,Cloud,Logistics-1,Hyderabad,2026-08,100,160,62.5\nEMP-1024,Lead,Cloud,Logistics-1,Hyderabad,2026-09,118,160,73.8\nEMP-1025,Analyst,SQL,Telecom-1,Chennai,2026-08,60,160,37.5\nEMP-1025,Analyst,SQL,Telecom-1,Chennai,2026-09,95,160,59.4\nEMP-1026,Senior Analyst,Power BI,Retail-1,Bengaluru,2026-08,123,160,76.9\nEMP-1026,Senior Analyst,Power BI,Retail-1,Bengaluru,2026-09,110,160,68.8\nEMP-1027,Lead,Cloud,Bank-1,Pune,2026-08,109,160,68.1\nEMP-1027,Lead,Cloud,Bank-1,Pune,2026-09,137,160,85.6\nEMP-1028,Analyst,SQL,Pharma-1,Hyderabad,2026-08,143,160,89.4\nEMP-1028,Analyst,SQL,Pharma-1,Hyderabad,2026-09,144,160,90.0\nEMP-1029,Lead,Power BI,Logistics-1,Chennai,2026-08,126,160,78.8\nEMP-1029,Lead,Power BI,Logistics-1,Chennai,2026-09,130,160,81.2\nEMP-1030,Lead,Cloud,Telecom-1,Bengaluru,2026-08,123,160,76.9\nEMP-1030,Lead,Cloud,Telecom-1,Bengaluru,2026-09,94,160,58.8\n"},
+ mob:{file:'visa_tracker.csv',label:'visa_tracker.csv',csv:"case_id,emp_id,from_country,to_country,visa_type,filed_date,expiry_date,status,attorney\nVC-2001,EMP-1101,India,UK,Skilled work,2026-08-04,2027-08-03,Approved,Firm A\nVC-2002,EMP-1102,India,US,Intra-company transfer,2026-08-11,2029-08-10,Approved,Firm B\nVC-2003,EMP-1103,India,Germany,Skilled work,2026-08-19,2028-08-18,In progress,Firm C\nVC-2004,EMP-1104,India,Singapore,Skilled work,2026-07-22,2028-07-21,Approved,Firm A\nVC-2005,EMP-1105,India,Canada,Dependant,2026-08-26,2027-08-25,In progress,Firm B\nVC-2006,EMP-1106,India,UK,Business visit,2026-09-02,2026-12-31,approved ,Firm C\nVC-2007,EMP-1107,India,US,Skilled work,2026-09-03,2028-09-02,In progress,Firm A\nVC-2008,EMP-1108,India,Germany,Intra-company transfer,2026-09-09,2028-09-08,In progress,Firm B\nVC-2009,EMP-1109,India,Australia,Skilled work,2026-09-12,2028-09-11,Pending docs,Firm C\nVC-2009,EMP-1109,India,Australia,Skilled work,2026-09-12,2028-09-11,Pending docs,Firm C\nVC-2010,EMP-1110,India,Singapore,Dependant,2026-09-15,2027-09-14,In progress,Firm A\nVC-2011,EMP-1111,India,Canada,Skilled work,2026-09-18,2028-09-17,In progress,Firm B\nVC-2012,EMP-1112,India,UK,Skilled work,2025-12-10,2026-11-12,Approved,Firm C\nVC-2013,EMP-1113,India,US,Skilled work,2025-11-20,2026-11-25,Approved,Firm A\nVC-2014,EMP-1114,India,Germany,Skilled work,2025-12-05,2026-12-01,Renewal filed,Firm B\nVC-2015,EMP-1115,India,Singapore,Intra-company transfer,2025-10-15,2026-11-30,,Firm C\nVC-2016,EMP-1116,India,Canada,Skilled work,2025-12-18,2026-12-04,Pending docs,Firm A\nVC-2017,EMP-1117,India,Australia,Skilled work,2024-10-01,2026-09-28,Approved,Firm B\nVC-2018,EMP-1118,India,UK,Dependant,2026-08-30,2027-08-29,Approved,Firm C\nVC-2019,EMP-1119,India,US,Business visit,2026-08-14,2026-12-20,Approved,Firm A\nVC-2020,EMP-1120,India,Germany,Skilled work,2026-08-22,2028-08-21,Approved,Firm B\nVC-2021,EMP-1121,India,Singapore,Skilled work,2026-09-21,2026-09-01,In progress,Firm C\nVC-2022,EMP-1122,India,Canada,Intra-company transfer,2026-09-24,2027-09-23,In progress,Firm A\nVC-2023,EMP-1123,India,Australia,Dependant,2026-09-25,2027-09-24,In progress,Firm B\nVC-2024,EMP-1124,India,UK,Skilled work,2026-09-27,2028-09-26,In progress,Firm C\n"}
+};
+const TEAM=()=>S.team==='mob'?'mob':'rm';
+const pick=(e,k)=>(TEAM()==='mob'&&e[k+'m'])||e[k];
+function dlCSV(name,text){
+  try{const b=new Blob([text],{type:'text/csv'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500);toast('Downloaded '+esc(name))}
+  catch(e){toast('Download blocked. Use the paste sample below.')}
+  award('first-dl',10,'Downloaded the sample data');
+}
+function dataBlock(){
+  const d=DATA[TEAM()],lines=d.csv.trim().split('\n'),mini=lines.slice(0,13).join('\n');
+  const w=el(`<div class="card tight" style="background:var(--bg);display:grid;gap:10px"><div class="eyebrow">Sample data · fictional · ${TEAM()==='mob'?'Global Mobility':'Resource Management'}</div><div class="row"><button class="btn sm" data-a="dl">Download ${esc(d.label)}</button><span class="muted" style="font-size:13px">${lines.length-1} rows. Attach it in Copilot Chat with the paperclip / “+” button.</span></div><details><summary style="cursor:pointer;font-weight:600;font-size:14px">No attach option? Paste a 12-row sample instead</summary><div style="margin-top:10px"></div></details></div>`);
+  $('[data-a=dl]',w).onclick=()=>dlCSV(d.file,d.csv);
+  $('details div',w).append(promptBox(mini,'12-row sample · copy and paste it under your prompt',{noSave:true}));
+  return w;
+}
+
+/* ================= DATA: MODULES ================= */
+const NEVER=['Employee names linked to personal details','Employee IDs together with names, passport or visa numbers, addresses or phone numbers','Immigration status, visa refusals, dependants or family details of identifiable people','Salary, bonus, appraisal or rating data for identifiable people','Health, leave-reason, disciplinary or grievance information','Client-confidential account names, revenue or unreleased company information'];
+const SPOT_RM='Sample table (clean rows only)\nAccount      Aug    Sep    Change\nBank-1       74.3%  88.0%  +13.7\nLogistics-1  74.8%  67.6%  -7.2\nPharma-1     82.2%  81.8%  -0.4\nRetail-1     87.0%  68.2%  -18.8\nTelecom-1    60.2%  67.0%  +6.8\nOverall      75.7%  74.0%  -1.7\n(average utilization; change in points)';
+const SPOT_MOB='Sample table (clean rows only)\nCases filed   Aug   Sep\nUK           2     2\nUS           2     1\nGermany      2     1\nSingapore    0     2\nCanada       1     2\nAustralia    0     2\nTotal        7     10';
+const MODS=[
+ {id:'m0',c:'M0',time:'0:00–0:08',min:8,t:'Welcome & Level-Set',oc:'What your Copilot Chat can and can’t do today, and where the paid add-on differs. Includes a check of what is enabled in your account.',
+  ex:[
+   {n:'0.1',t:'Warm-up: “What can you do for my team?”',s:'A table of your team’s weekly tasks and where Copilot Chat can help.',
+    p:'Act as a productivity coach for a Resource Management (workforce management) team at a data analytics company in India.\nList the 10 most time-consuming reporting and coordination tasks an RM team handles each week.\nFor each, give one sentence on how Microsoft Copilot Chat could help, and say whether I would need to paste or attach data.\nFormat: a table with columns — Task | Typical time today | How Copilot Chat helps | Needs data pasted or attached?',
+    pm:'Act as a productivity coach for a Global Mobility and Immigration team at a data analytics company in India.\nList the 10 most time-consuming tracking, document and communication tasks such a team handles each week.\nFor each, give one sentence on how Microsoft Copilot Chat could help, and say whether I would need to paste or attach data.\nFormat: a table with columns — Task | Typical time today | How Copilot Chat helps | Needs data pasted or attached?'},
+   {n:'0.2',t:'Know what it can and can’t see',s:'Plain-language answers on visibility, files and data protection.',
+    p:'I am using Microsoft Copilot Chat at work with my company account. Explain in plain language:\n1. What you can see when I type a prompt here.\n2. What you cannot see (my files on my laptop, my inbox, SharePoint) unless I paste or attach it.\n3. What "enterprise data protection" means for an employee.\n4. Whether you can work inside my Excel workbook, or only on data I attach or paste here.\nFormat: four short sections, 3–4 bullets each. No jargon.',
+    fac:'Copilot describing itself is a starting point. Check your own account: do you see an attach option? Does Copilot show up inside Excel? Features depend on your licence and how Tredence has set up the tenant.',warn:1}
+  ],
+  qs:[
+   {id:'m0q1',type:'mcq',q:'Which of these should Copilot never own?',o:['A first draft of a leadership summary','Summarising a long email thread','The final decision on who to staff or release from the bench','Suggesting Excel formulas'],a:2,why:'Copilot drafts, summarises and suggests. People decisions, and compliance or visa sign-off, stay with people.'},
+   {id:'m0q2',type:'mcq',kind:'Myth or fact',q:'“I can’t use Copilot for Excel-style analysis unless Copilot is built into Excel.”',o:['Myth','Fact'],a:0,why:'In Copilot Chat you can attach a CSV or Excel file (or paste a small table) and ask for analysis, formulas and chart suggestions. The in-Excel Copilot, part of the paid licence, works on the open workbook directly. If attach is disabled for you, paste a small sample.'}
+  ]},
+ {id:'m1',c:'M1',time:'0:08–0:18',min:10,t:'The Prompting Framework',oc:'A repeatable Role → Task → Context → Format method. The Prompt Lab tab has the full set of drills and prompt types.',
+  ex:[
+   {n:'1.1',t:'Weak prompt vs. strong prompt',s:'Run both on the same file and compare.',dl:1,weak:'Summarise this data.',
+    p:'Act as a senior workforce-management analyst at a data analytics company.\nAnalyse the attached utilization file for August and September 2026 (30 associates).\nContext: Utilization = billable hours ÷ available hours. The audience is the Head of Resource Management. List data errors first, and never guess missing values.\nFormat: a 5-bullet summary, a table of average utilization by account and month, then a list of data problems. Under 250 words plus the tables.',
+    pm:'Act as a senior global-mobility operations analyst at a data analytics company.\nAnalyse the attached visa tracker (as of 7 Oct 2026).\nContext: The audience is the Head of Global Mobility. List data errors first, and never guess missing values. Do not give legal advice.\nFormat: a 5-bullet summary, a table of cases by destination country and status, then a list of data problems. Under 250 words plus the tables.',
+    fu:['Show your calculation for the averages.','List any rows you excluded and why.']},
+   {n:'1.2',t:'Rewrite your own prompt with RTCF',s:'Turn a rough prompt you normally type into a structured one.',
+    p:'Here is a rough prompt I normally type: [paste a prompt, with no real data in it].\nRewrite it as a Role, Task, Context, Format prompt, with each part on its own line.\nThen ask me up to 3 questions about anything that is still unclear.',
+    fac:'Use a prompt about a task you actually do, but without real names, IDs or figures.'}
+  ],
+  qs:[
+   {id:'m1q1',type:'mcq',q:'Copilot reports one person at 118% utilization. What is the best prompt fix for next time?',o:['“Be accurate.”','Add the rule: “Utilization = billable ÷ available hours. Flag any value above 100% as a possible data error and list it.”','“Don’t make mistakes.”','Ask for a longer answer'],a:1,no:{0:'Copilot can’t act on “be accurate”.',2:'Same problem.',3:'Longer isn’t more correct.'},why:'Give Copilot the definition and the rule for odd values. Then odd values get flagged, not averaged in silently.'},
+   {id:'m1q2',type:'mcq',q:'Why add “never guess missing values; list them” to a data prompt?',o:['It makes the answer shorter','Copilot can fill gaps with plausible but invented numbers','It switches Copilot to a different model','It is only needed for large files'],a:1,no:{0:'It usually makes the answer slightly longer.',2:'It doesn’t switch anything.',3:'Small files have gaps too.'},why:'A made-up value looks exactly like a real one. Asking Copilot to list the gaps keeps the decision with you.'}
+  ]},
+ {id:'m2',c:'M2',time:'0:18–0:26',min:8,t:'Safe Prompting',oc:'What never goes into Copilot, how to use fictional or anonymised data, and where AI assists but humans decide.',guard:1,
+  ex:[
+   {n:'2.1',t:'Anonymise before you prompt',s:'Turn a fictional record into a safe version with placeholders.',
+    p:'Act as a data-privacy coach for a workforce operations team.\nHere is a fictional record I made up: [paste a made-up row with an ID, a name, a country and a date].\nTask: list which fields are personal or sensitive, and rewrite the record with placeholders so it is safe to analyse.\nThen tell me what analysis is still possible with the placeholder version.\nFormat: a table with columns Field | Sensitive? | Placeholder.',
+    fac:'Use made-up text only. Replacing names does not make a record anonymous. Combinations of fields can still identify a person, so follow Tredence’s data rules.',warn:1}
+  ],
+  qs:[
+   {id:'m2q1',type:'tag',kind:'Game · Paste or Protect',q:'Could this go into Copilot during this workshop? Mark each one Safe or Never.',labels:['Safe','Never'],xp:50,
+    items:[['The fictional sample files provided in this workshop','Safe'],['The real bench list with names and appraisal ratings','Never'],['A visa tracker with real passport numbers','Never'],['Account-level averages only (no individual rows), approved for internal sharing','Safe'],['A real employee’s immigration status and dependants’ details','Never'],['A draft email template with [Employee] and [Country] placeholders','Safe'],['Client-confidential account names and revenue figures','Never']],
+    why:'Fictional data, placeholder templates and approved aggregates are fine. Anything that identifies a person, or exposes client-confidential information, stays out. When in doubt, ask your data owner first.'},
+   {id:'m2q2',type:'mcq',q:'You want realistic data to practise a new prompt. What is the best option?',o:['Paste last month’s real file with the names deleted','Ask Copilot to generate a fictional sample with the same columns, or use the provided files','Paste only the rows for people you trust','Use a screenshot of the real file instead'],a:1,no:{0:'Deleting names does not make a file anonymous.',2:'Trust isn’t a data-protection control.',3:'A screenshot contains the same data.'},why:'Fictional data lets you practise freely. For real work, use approved, anonymised extracts and follow your data rules.'}
+  ]},
+ {id:'m3',c:'M3',time:'0:26–0:51',min:25,t:'Data Analysis in Copilot Chat',oc:'Attach a file (or paste a sample) and have Copilot profile it, summarise it and list exceptions. Then ask it to coach you on the Excel formulas, so you can reproduce and check the results.',
+  ex:[
+   {n:'3.1',t:'Profile the dataset and find the problems',s:'Rows, columns, ranges and data-quality issues, before any analysis.',dl:1,
+    p:'Act as a data analyst. I have attached the utilization file (or pasted a sample below).\nTask: Profile the dataset. Tell me the number of rows and columns, what each column means, the months covered and the number of distinct employees.\nThen list every data-quality issue you can find: blanks, duplicate rows, impossible values (billable hours greater than available hours) and rows where the stated utilization_pct does not match billable ÷ available.\nFormat: a short table of columns, then a numbered list of issues with the emp_id and month. Do not fix anything and do not guess missing values.',
+    pm:'Act as a data analyst. I have attached the visa tracker (or pasted a sample below).\nTask: Profile the dataset. Tell me the number of rows and columns, what each column means, the date ranges and the number of distinct cases.\nThen list every data-quality issue you can find: blanks, duplicate case IDs, expiry dates earlier than filed dates, and inconsistent status labels.\nFormat: a short table of columns, then a numbered list of issues with the case_id. Do not fix anything and do not guess missing values.',
+    fu:['Show the exact rows for issue 1.','Did you check every column? List what you checked.']},
+   {n:'3.2',t:'Summarise by group, and get the Excel steps',s:'A pivot-style table plus the PivotTable steps to reproduce it yourself.',dl:1,
+    p:'Using the cleaned data (exclude the problem rows you listed, and tell me how many rows that is):\n1. Build a table of average utilization by account for each month.\n2. Build a second table of headcount by grade and skill.\n3. Give me the 3 most important patterns.\nThen give me the exact steps (PivotTable fields, filters, value settings) to reproduce table 1 in desktop Excel.\nFormat: two tables, a numbered list of patterns, then numbered Excel steps.',
+    pm:'Using the cleaned data (exclude the problem rows you listed, and tell me how many rows that is):\n1. Build a table of cases by destination country and status.\n2. Build a second table of cases by visa type and attorney firm.\n3. Give me the 3 most important patterns.\nThen give me the exact steps (PivotTable fields, filters, value settings) to reproduce table 1 in desktop Excel.\nFormat: two tables, a numbered list of patterns, then numbered Excel steps.'},
+   {n:'3.3',t:'Exception report',s:'The rows that need attention, sorted, with a highlighting rule for Excel.',dl:1,
+    p:'From the cleaned data, list the exceptions: associates with utilization below 60% or above 100% in any month.\nFor each: emp_id, account, month, utilization, and a one-line reason to review. Treat a value above 100% as a possible data error and say so.\nFormat: a table sorted by severity, then the Excel conditional-formatting rule (with the formula) I would use to highlight these rows.',
+    pm:'As of 7 October 2026, list the visa cases that:\n(a) expire within the next 60 days and do not have status "Renewal filed", and\n(b) have already expired.\nFor each: case_id, destination country, expiry date, days remaining (negative if expired) and status. If the status is blank, say so.\nFormat: a table sorted by days remaining, then the Excel formula for days remaining and a conditional-formatting rule to highlight cases under 60 days. Do not give legal advice.',
+    fu:['Which rows did you exclude, and why?','What else in this data looks unusual?']},
+   {n:'3.4',t:'Copilot as your Excel coach',s:'Formulas, pivot steps and a chart recommendation for your own workbook.',
+    p:'I use desktop Excel without Copilot. I have a table with these columns: [list your column names].\nGive me: (1) a formula to calculate [utilization %], (2) an AVERAGEIFS or COUNTIFS formula for [average per account], (3) step-by-step PivotTable setup, (4) one chart type I should use and why.\nFormat: numbered steps with the exact formulas in separate lines. State any assumption about my column letters.',
+    fac:'Copilot can’t see your workbook, so give it only the column names. Test every formula on a few rows you can check by hand.'}
+  ],
+  qs:[
+   {id:'m3q1',type:'mcq',q:'The attach option is disabled in your Copilot Chat. What is the best fallback?',o:['Give up on data work in Copilot','Paste a small, fictional or approved sample (about 12 rows) under your prompt, and ask Copilot for formulas to run on the full file','Paste the entire real file anyway','Retype the data from memory'],a:1,no:{0:'Copilot can still coach you on formulas and logic.',2:'That breaks the data rules.',3:'Memory is where errors start.'},why:'A small approved sample lets Copilot show its method. Then you apply the formulas to the full file yourself, inside Excel.'},
+   {id:'m3q2',type:'multi',q:'Which of these are data-quality issues Copilot should flag before analysing?',code:'emp_id    month    bill  avail  pct\nEMP-1007  2026-09  120   160    75.0\nEMP-1007  2026-09  120   160    75.0\nEMP-1012  2026-09  (blank) 160  (blank)\nEMP-1019  2026-08  190   160    118.8\nEMP-1023  2026-09  84    160    85.0',o:['Row 1 and row 2 are identical (duplicate)','EMP-1012 has a blank billable value','EMP-1019 billable hours exceed available hours','EMP-1023’s pct does not match 84 ÷ 160','Every row has the month in the same format'],a:[0,1,2,3],why:'Duplicate, blank, hours above available, and a stated pct that doesn’t match (84 ÷ 160 is 52.5%, not 85%). Matching month formats is the one thing that’s fine.'},
+   {id:'m3q3',type:'mcq',q:'You asked for “utilization below 60%”. Copilot also lists someone at 62%. What is the most useful reply?',o:['“Good, extra information.”','“Why is 62% on this list? Apply my rule exactly and re-list.”','“Delete that row from my file.”','Accept it. Copilot probably knows better.'],a:1,no:{0:'Rows that break the rule mislead the reader.',2:'Copilot can’t edit your file.',3:'Copilot doesn’t know your rule better than you do.'},why:'State the rule, check against it, and send Copilot back to apply it exactly. Your rule wins.'}
+  ]},
+ {id:'m4',c:'M4',time:'0:51–1:06',min:15,t:'Variance & Verification',oc:'Compare two months, get an explanation that separates evidence from hypotheses, then recompute two numbers yourself.',
+  ex:[
+   {n:'4.1',t:'Variance and explanation',s:'Month-on-month movement, ranked, with an honest explanation.',dl:1,
+    p:'Compare September with August by account: the change in average utilization (percentage points) and the change in total billable hours. Use the cleaned data.\nRank the accounts by size of movement.\nThen write a 4-line explanation of what may have driven the top 2 movements.\nBe explicit: label each line "Evidence from the data" or "Hypothesis to verify". Show your calculation for every number.',
+    pm:'Compare September with August by destination country: the number of cases filed in each month and the change. Use the cleaned data and the filed_date column.\nRank the countries by size of movement.\nThen write a 4-line explanation of what may have driven the top 2 movements.\nBe explicit: label each line "Evidence from the data" or "Hypothesis to verify". Show your calculation for every number.',
+    fu:['Which of your numbers are you least sure about?','Turn this into a 3-line email to the Head of the team.']},
+   {n:'4.2',t:'Verify two numbers yourself',s:'Get the formulas, check the numbers in Excel, and report back to Copilot.',
+    p:'Give me the exact Excel formulas to recompute these three numbers from the data: [pick three numbers Copilot reported, for example the total billable hours in September, the average for one account, the count of rows under 60%].\nI will run them in Excel and tell you if any value differs from what you reported.',
+    fac:'If a number differs, paste the Excel result back into the chat and ask: “Find the discrepancy. Which rows did you include or exclude?” That is verification working as designed.'}
+  ],
+  qs:[
+   {id:'m4q1',type:'mcq',q:'Copilot says total September billable hours are 3,500. Your Excel check says 3,432. What do you do?',o:['Use Copilot’s number, since AI is faster','Use Excel’s number and ask Copilot to find the discrepancy','Average the two','Ignore both and estimate'],a:1,no:{0:'Speed isn’t accuracy.',2:'An average of a right and a wrong number is still wrong.',3:'Estimating adds more error.'},why:'Your checked number goes forward. Then ask Copilot which rows it included or excluded: the answer usually exposes a duplicate or a blank row.'},
+   {id:'m4q2',type:'order',q:'Order the verification loop for any number you will send to leadership.',items:['Ask Copilot for the calculation behind the number','Recompute it independently in Excel','If they differ, find the rows that explain the gap','Send only the verified number, with the date and data source']
+    ,why:'Calculation, independent check, reconcile, then send with its source. The same loop works for utilization, bench counts and case counts.'}
+  ]},
+ {id:'m5',c:'M5',time:'1:06–1:12',min:6,t:'Spot the Error',oc:'Game: Copilot has written a summary of a small table. Two of its statements are wrong. Find them.',
+  ex:[],
+  qs:[
+   {id:'m5q1',type:'multi',kind:'Game · Spot the error (RM)',q:'Copilot summarised this table. Select the two statements that are wrong.',xp:50,code:SPOT_RM,
+    o:['Bank-1 had the highest September utilization at 88.0%.','Retail-1 fell by 18.8 points, the biggest drop.','Overall utilization improved from August to September.','Pharma-1 was broadly flat (−0.4 points).','Telecom-1 had the largest improvement, up 13.7 points.'],a:[2,4],
+    why:'Overall utilization fell from 75.7% to 74.0%. And Bank-1, not Telecom-1, had the +13.7 point gain; Telecom-1 rose 6.8 points. Always check a claim against the table.'},
+   {id:'m5q2',type:'multi',kind:'Game · Spot the error (Mobility)',q:'Copilot summarised this table. Select the two statements that are wrong.',xp:50,code:SPOT_MOB,
+    o:['Cases filed rose from 7 in August to 10 in September.','Australia had no filings in August and 2 in September.','Germany filings increased in September.','The UK was unchanged at 2 cases in both months.','Singapore had the biggest increase, from 0 to 3.'],a:[2,4],
+    why:'Germany fell from 2 to 1. Singapore rose from 0 to 2, not 3. Two small slips that would look fine in a leadership email, unless you check.'}
+  ]},
+ {id:'m6',c:'M6',time:'1:12–1:22',min:10,t:'Demo: Same Prompt, Second Tool',oc:'Your trainer runs the exact same exception prompt in Gemini Enterprise. You don’t need access. Watch what stays the same and what changes.',
+  ex:[
+   {n:'6.1',t:'Compare the two answers',s:'The same prompt as exercise 3.3. Watch the demo, then compare.',
+    p:'From the cleaned data, list the exceptions: associates with utilization below 60% or above 100% in any month.\nFor each: emp_id, account, month, utilization, and a one-line reason to review. Treat a value above 100% as a possible data error and say so.\nFormat: a table sorted by severity.',
+    pm:'As of 7 October 2026, list the visa cases that (a) expire within the next 60 days and do not have status "Renewal filed", and (b) have already expired.\nFor each: case_id, destination country, expiry date, days remaining and status. If the status is blank, say so.\nFormat: a table sorted by days remaining. Do not give legal advice.',
+    fac:'While you watch, note: Did both tools find the same rows? Did both flag the data problems first? Did either invent a value? Which one showed its working?'}
+  ],
+  qs:[
+   {id:'m6q1',type:'multi',q:'You move the same task to another AI tool. What should stay the same?',o:['The Role → Task → Context → Format structure','The rule about what data never goes in','Verifying the numbers yourself','The exact menu names and buttons','What data the tool can access under your licence'],a:[0,1,2],why:'Structure, data rules and verification travel with you. Menus, features and data access differ by tool and licence, so check them each time.'},
+   {id:'m6q2',type:'mcq',q:'The two tools give slightly different answers to the same prompt. What does that tell you?',o:['One of the tools is broken','Outputs vary by tool and by run, so check each against the data','The prompt was too long','You should always trust the newer tool'],a:1,no:{0:'Variation is normal.',2:'Length wasn’t the issue.',3:'Newer doesn’t mean more accurate.'},why:'Variation is normal. Your data and your verification step are the source of truth, not either tool.'}
+  ]},
+ {id:'m7',c:'M7',time:'1:22–1:30',min:8,t:'Wrap & Boss Round',oc:'Save your starter prompts, take the boss round, and plan one thing to try before Day 2.',wrap:1,
+  ex:[],
+  qs:[
+   {id:'b1',type:'mcq',kind:'Boss round · 1 of 3',xp:50,q:'A leader wants a bench-risk summary by tomorrow. You have a real file with names and appraisal ratings. Best plan?',o:['Paste the file into Copilot Chat to save time','Use approved, anonymised or aggregated data, run data checks first, verify two numbers in Excel, and keep the staffing decisions with people','Ask Copilot to decide who is at risk and send its list','Skip the checks since the deadline is tight'],a:1,no:{0:'Real names with ratings breach the data rules.',2:'Copilot must not make people decisions.',3:'A deadline is when errors cost the most.'},why:'Safe data, checks first, independent verification, and people decide. That is the whole of Day 1 in one line.'},
+   {id:'b2',type:'mcq',kind:'Boss round · 2 of 3',xp:50,q:'Copilot says a visa expires in 40 days. Your tracker says 70. What now?',o:['Send the alert using the 40-day figure to be safe','Check the expiry date and the as-of date yourself, ask Copilot to show its calculation, and send only the verified figure','Delete the case from the tracker','Ask the attorney to fix Copilot'],a:1,no:{0:'A wrong alert erodes trust and may trigger needless work.',2:'Never delete data to resolve a disagreement.',3:'The attorney isn’t responsible for your prompt.'},why:'Check the inputs (expiry date, as-of date), have Copilot show its working, and send only what you have verified.'},
+   {id:'b3',type:'order',kind:'Boss round · 3 of 3',xp:70,q:'Order a safe end-to-end workflow for any workforce or mobility report.',items:['Use fictional, approved or anonymised data','Ask Copilot to profile the data and list problems','Run the analysis or exceptions on the cleaned data','Verify two numbers independently in Excel','Draft the summary, then a human reviews it before it is sent'],why:'Safe data, profile, analyse, verify, review. Memorise the order and you can use it on any data task.'}
+  ]}
+];
+const LIVE={
+ '0.1':{time:1,e:'A 10-row table of weekly tasks and where Copilot Chat can help.',c:'Time estimates are Copilot’s guesses. Use them to start a discussion, not as data.'},
+ '1.1':{e:'A vague paragraph from the weak prompt. From the strong prompt: data problems listed first, a table by account and month, and a 5-bullet summary under 250 words.',c:'Does the strong answer put the data problems first? Are the table and the word limit there? Did it invent any value?',
+        em:'A vague paragraph from the weak prompt. From the strong prompt: data problems listed first, a table by country and status, and a 5-bullet summary under 250 words.',cm:'Does the strong answer put the data problems first? Are the table and the word limit there? Did it give any legal advice?'},
+ '3.1':{e:'A column table, row and column counts, and a numbered list of data issues.',c:'The sample file contains exactly 4 data problems. Did Copilot find all 4? Did it guess any value?'},
+ '3.3':{e:'A table of exceptions sorted by severity, plus a conditional-formatting rule.',c:'Open the CSV in Excel, sort or filter it yourself and confirm Copilot did not miss or invent a row.',
+        em:'A table of expiring and expired cases sorted by days remaining, plus a days-remaining formula.',cm:'Recompute days remaining for two cases in Excel. Is the blank-status case flagged, not guessed?'},
+ '4.1':{e:'A ranked movement table and a 4-line explanation that labels evidence versus hypothesis.',c:'Recheck the top two numbers in Excel. Is every “because” labelled as a hypothesis?',
+        em:'A ranked table of filings by country and a 4-line explanation that labels evidence versus hypothesis.',cm:'Recount two countries in Excel. Is every “because” labelled as a hypothesis?'}
+};
+const FOLLOWS=['Show your calculation for that number.','Make it 50% shorter.','Turn this into a table.','What assumptions did you make?','What would you check before sending this to leadership?','List any rows you excluded and why.'];
+
+/* ================= DATA: LIBRARY ================= */
+const LIB=[
+ {n:1,t:'Profile a dataset',c:'Analyse',p:'Act as a data analyst. Profile the attached file: rows, columns, what each column means, the date range and the number of distinct [employees / cases]. Then list data-quality issues (blanks, duplicates, impossible values) with row identifiers. Do not fix anything and do not guess missing values.'},
+ {n:2,t:'Data-quality check',c:'Analyse',p:'Act as a data-quality reviewer. Check the attached table for: blanks, duplicate rows, values that break this rule: [rule, e.g. billable hours cannot exceed available hours], and inconsistent labels. Format: a table with Row | Column | Issue | Suggested check. Do not change the data.'},
+ {n:3,t:'Pivot-style summary + Excel steps',c:'Analyse',p:'Using the cleaned data, build a table of [measure] by [group] for each [period]. Then give me numbered steps (PivotTable fields, filters, value settings) to reproduce it in desktop Excel. State the number of rows you excluded.'},
+ {n:4,t:'Exception list',c:'Analyse',p:'List the rows that break this rule: [rule, e.g. utilization below 60% or above 100%]. For each: [identifier], [period], [value] and a one-line reason to review. Sort by severity. Then give me the Excel conditional-formatting rule to highlight them.'},
+ {n:5,t:'Variance with evidence vs hypothesis',c:'Report',p:'Compare [this month] with [last month] by [group]: change in [measure] and in [measure 2]. Rank by size of movement. Write 4 lines on what drove the top 2 movements, each labelled "Evidence from the data" or "Hypothesis to verify". Show your calculation for every number.'},
+ {n:6,t:'5-line executive summary',c:'Report',p:'Act as a senior analyst. Summarise the table below for [the Head of RM / the Head of Global Mobility], who has 2 minutes. Format: 5 bullets (what changed, why it may have changed, risk, action, what to verify). Under 120 words. Use only numbers from the table.'},
+ {n:7,t:'Excel formula coach',c:'Verify',p:'I use desktop Excel. My columns are: [list columns]. Give me the exact formula for [what you want to calculate], state any assumption about column letters, and give one example row so I can check the answer by hand.'},
+ {n:8,t:'Verify my numbers',c:'Verify',p:'Give me the exact Excel formulas to recompute these numbers from the data: [list 3 numbers you reported]. I will run them and report any difference. If a number differs, tell me which rows you may have included or excluded.'},
+ {n:9,t:'Anonymise a fictional record',c:'Safety',p:'Here is a fictional record I made up: [paste]. List which fields are personal or sensitive, rewrite it with placeholders, and tell me what analysis is still possible. Format: table Field | Sensitive? | Placeholder.'},
+ {n:10,t:'Fairness check on criteria',c:'Safety',p:'Review the selection criteria below for anything that could unfairly screen people out (for example age, gender, marital status, nationality or visa status used as a filter). List each concern and suggest a neutral, job-related alternative. Criteria: [paste fictional criteria].'}
+];
+
+/* ================= BADGES ================= */
+const ALLQ=()=>[...ANATOMY,...TYPES.flatMap(t=>t.qs),...MODS.flatMap(m=>m.qs||[])];
+const done=id=>S.ans[id]&&S.ans[id].done;
+const BADGES=[
+ {id:'spark',nm:'First Spark',d:'Answer your first question correctly',ok:()=>S.right>=1},
+ {id:'rtcf',nm:'RTCF Fluent',d:'Clear all three anatomy drills',ok:()=>ANATOMY.every(q=>done(q.id))},
+ {id:'types',nm:'Type Collector',d:'Clear all 10 prompt-type challenges',ok:()=>TYPES.every(t=>t.qs.every(q=>done(q.id)))},
+ {id:'sharp',nm:'Sharpshooter',d:'10 answers right on the first try',ok:()=>S.first>=10},
+ {id:'safe',nm:'Safety Sentinel',d:'Win the Paste or Protect game',ok:()=>done('m2q1')},
+ {id:'scan',nm:'Red-Flag Radar',d:'Scan text for personal data and unfair criteria',ok:()=>S.flags['tool:pii']&&S.flags['tool:bias']},
+ {id:'arch',nm:'Master Builder',d:'Score 85+ in the Prompt Builder',ok:()=>S.flags['tool:builder']},
+ {id:'detective',nm:'Data Detective',d:'Clear all three data-analysis checkpoints',ok:()=>['m3q1','m3q2','m3q3'].every(done)},
+ {id:'number',nm:'Number Checker',d:'Win a Spot the Error game',ok:()=>done('m5q1')||done('m5q2')},
+ {id:'lib',nm:'Curator',d:'Star 5 prompts in the library',ok:()=>S.stars.length>=5},
+ {id:'roi',nm:'Business Case',d:'Model your team’s time savings',ok:()=>S.flags['tool:roi']},
+ {id:'circuit',nm:'Full Circuit',d:'Complete all 8 session modules',ok:()=>MODS.filter(m=>!m.brk).every(m=>S.mods[m.id])},
+ {id:'boss',nm:'Champion',d:'Clear the boss round',ok:()=>['b1','b2','b3'].every(done)}
+];
+function checkBadges(){
+  BADGES.forEach(b=>{if(!S.badges[b.id]&&b.ok()){S.badges[b.id]=Date.now();save();setTimeout(()=>toast(`${I.medal}<span>Badge unlocked: <strong>${esc(b.nm)}</strong></span>`,3200),350);award('badge:'+b.id,25,'Badge: '+b.nm)}});
+}
+
+/* ================= TABS ================= */
+const TABS=[['modules','Session Modules'],['lab','Prompt Lab'],['tools','Power Tools'],['library','Prompt Library'],['cheat','Cheat Sheet'],['progress','Level & Progress']];
+let current='lab';
+function buildTabs(){
+  const nav=$('#tabs');
+  TABS.forEach(([id,nm],i)=>{const b=el(`<button class="tab" role="tab" id="tab-${id}" aria-selected="false"><span class="k">${i+1}</span>${nm}</button>`);b.onclick=()=>go(id);nav.append(b)});
+}
+function go(id,noScroll){
+  current=id;$$('.tab').forEach(t=>t.setAttribute('aria-selected',t.id==='tab-'+id));
+  const main=$('#main');main.innerHTML='';
+  ({lab:renderLab,modules:renderModules,tools:renderTools,library:renderLibrary,cheat:renderCheat,progress:renderProgress})[id]();
+  try{history.replaceState(null,'','#'+id)}catch(e){}
+  if(!noScroll)window.scrollTo({top:0,behavior:'smooth'});
+  $('#tab-'+id).scrollIntoView({block:'nearest',inline:'nearest'});
+}
+function page(){const p=el('<section class="page"></section>');$('#main').append(p);return p}
+function refreshMeta(){$$('.ty').forEach(b=>{const t=TYPES.find(x=>x.id===b.dataset.t);$$('.dots i',b).forEach((d,k)=>d.classList.toggle('on',!!done(t.qs[k].id)))})}
+
+/* ================= RENDER: LAB ================= */
+let selType='zero';
+function renderLab(){
+  const p=page();
+  const hero=el(`<div class="hero"><div><div class="row" style="justify-content:space-between"><div class="eyebrow">Tab 2 · Prompt engineering · used in M1</div><button class="btn sm ghost" data-go="modules">← Back to Session Modules</button></div><h1 style="margin-top:10px">Brief Copilot like a <em>smart new joiner</em>.</h1><p class="lede">Every strong prompt answers four questions. Click each block to see what it does and what goes wrong without it.</p><div class="howxp"><span class="pill"><b>+20–60 XP</b> per correct answer</span><span class="pill">Half XP on a second try</span><span class="pill">Copy → paste into Copilot → check the result</span><span class="pill"><b>+25 XP</b> per badge</span></div></div><div class="rtcf" id="rtcf"></div></div>`);
+  RTCF.forEach(r=>{const b=el(`<button class="rt" data-k="${r.k}" aria-expanded="false"><span class="hint">click</span><span class="big">${r.L}</span><span class="nm">${r.nm}</span><span class="q">${r.q}</span><span class="more"><span class="ex">${esc(r.ex)}</span>${esc(r.skip)}</span></button>`);
+    b.onclick=()=>{b.classList.toggle('open');b.setAttribute('aria-expanded',b.classList.contains('open'));if($$('.rt.open').length===4)award('rtcf-explore',10,'Explored all four RTCF parts')};$('#rtcf',hero).append(b)});
+  p.append(hero);
+
+  // weak vs strong
+  const cmp=el(`<div class="card compare"><div class="compare-top"><div class="sec-h"><div class="eyebrow">See the difference</div><h2 style="font-size:24px">Same request, two prompts</h2></div><div class="seg" role="group" aria-label="Prompt version"><button aria-pressed="false" data-v="weak">Weak prompt</button><button aria-pressed="true" data-v="strong">Strong (RTCF)</button></div></div><div id="cmpBody"></div></div>`);
+  const weakHTML=`<div class="colored">Summarise this data.</div><div class="outcome"><div class="dn"><b>~400</b>words, generic</div><div class="dn"><b>0</b>data checks</div><div class="dn"><b>No</b>tables or structure</div><div class="dn"><b>Heavy</b>checking needed</div></div>`;
+  const strongHTML=`<div class="colored">${STRONG.map(([k,t])=>`<span class="c${k}">${esc(t)}</span>`).join('')}</div><div class="legend"><span><i style="background:var(--r)"></i>Role</span><span><i style="background:var(--t)"></i>Task</span><span><i style="background:var(--c)"></i>Context</span><span><i style="background:var(--f)"></i>Format</span></div><div class="outcome"><div class="up"><b>&lt;250</b>words plus tables</div><div class="up"><b>First</b>data problems listed</div><div class="up"><b>2</b>tables you can check</div><div class="up"><b>Light</b>checking needed</div></div>`;
+  const setCmp=v=>{$('#cmpBody',cmp).innerHTML=v==='weak'?weakHTML:strongHTML;$$('.seg button',cmp).forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v))};
+  $$('.seg button',cmp).forEach(b=>b.onclick=()=>setCmp(b.dataset.v));setCmp('strong');
+  cmp.append(el('<p class="muted" style="font-size:12.5px">Illustrative outcomes, not measured results. Run both prompts and compare for yourself.</p>'));
+  p.append(cmp);
+
+  // anatomy drills
+  p.append(el(`<div class="sec-h"><div class="eyebrow">Hands-on · Anatomy drills</div><h2>Take a prompt apart, then build one</h2><p>Three quick drills. Every one pays XP.</p></div>`));
+  const g=el('<div class="grid3"></div>');ANATOMY.forEach(q=>{const c=el('<div class="card tight"></div>');c.append(renderQ(q));g.append(c)});p.append(g);
+
+  // types
+  p.append(el(`<div class="sec-h"><div class="eyebrow">Types of prompt</div><h2>Five prompt types, two challenges each</h2><p>Pick a type. Each one has a template, a workforce example you can copy, and two hands-on challenges.</p></div>`));
+  const tg=el('<div class="types" role="tablist" aria-label="Prompt types"></div>');
+  TYPES.forEach(t=>{const b=el(`<button class="ty" role="tab" data-t="${t.id}" aria-selected="${t.id===selType}"><span class="ico">${I[t.ic]}</span><b>${t.nm}</b><small>${t.tag}</small><span class="dots"><i></i><i></i></span></button>`);b.onclick=()=>{selType=t.id;$$('.ty',tg).forEach(x=>x.setAttribute('aria-selected',x===b));drawType(det,true)};tg.append(b)});
+  p.append(tg);const det=el('<div class="card" id="tdet"></div>');p.append(det);drawType(det);refreshMeta();
+
+  // add-ons
+  const ad=el(`<div class="card"><div class="sec-h"><div class="eyebrow">Power add-ons</div><h2 style="font-size:22px">Append one of these to any prompt</h2></div><div class="fu" style="margin-top:14px"></div></div>`);
+  ADDONS.forEach(a=>{const b=el(`<button class="fuchip">+ ${esc(a)}</button>`);b.onclick=()=>{copyText(a,null);toast('Add-on copied')};$('.fu',ad).append(b)});p.append(ad);
+}
+function drawType(det,scroll){
+  const t=TYPES.find(x=>x.id===selType);det.innerHTML='';
+  const top=el(`<div class="tdetail"><div style="display:grid;gap:14px;align-content:start"><div><div class="eyebrow">${t.tag}</div><h3 style="margin-top:4px">${t.nm}</h3></div><p>${t.what}</p><div><div class="eyebrow" style="margin-bottom:6px">Use it for</div><div class="chips">${t.use.map(u=>`<span class="chip">${u}</span>`).join('')}</div></div><div class="watch"><b>Watch out:</b> ${t.watch}</div></div><div style="display:grid;gap:12px;align-content:start" class="rightcol"></div></div>`);
+  $('.rightcol',top).append(promptBox(t.ex,'Workforce example · try this one',{title:t.nm+' example',key:'ty:'+t.id}),el(`<div class="tryit"><div class="eyebrow">Try it in Copilot · 2 minutes</div><ol><li>Fill any yellow brackets (or leave the examples as they are).</li><li>Click <b>Copy</b>, open Copilot Chat, paste with <b>Ctrl+V</b> and press Enter.</li><li>Where it says [paste], use the fictional sample files from Day 1, or first ask Copilot: “Create a short fictional table I can practise on.”</li><li><b>Look for:</b> ${t.look}</li><li>Then answer the two challenges below for XP.</li></ol></div>`),promptBox(t.tpl,'Reusable template for your own tasks',{noSave:true}));
+  det.append(top);
+  const qs=el('<div class="grid2" style="margin-top:20px"></div>');t.qs.forEach(q=>{const c=el('<div class="card tight" style="background:var(--bg)"></div>');c.append(renderQ(q));qs.append(c)});det.append(qs);
+  if(scroll)det.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ================= RENDER: MODULES ================= */
+let selMod='m0';
+function renderModules(){
+  const p=page();
+  p.append(el(`<div class="welcome"><div class="wl-l"><div class="eyebrow">Day 1 of 4 · Tredence · Resource Management &amp; Global Mobility</div><h1>Copilot for <em>Workforce &amp; Mobility Ops</em></h1><p class="lede">Ninety minutes to go from occasional Copilot use to confident daily use: briefing Copilot properly, handling data safely, and getting checked analysis out of a spreadsheet, all from Copilot Chat.</p><div class="howxp"><span class="pill">No prior AI experience needed</span><span class="pill">Works in Copilot Chat</span><span class="pill">Fictional samples provided</span></div></div><div class="wl-r"><div class="eyebrow">How today works</div><ol class="wl-steps"><li><b>Pick your team</b> below. You get your own sample file and prompts.</li><li><b>Copy a prompt</b>, fill the yellow brackets, attach the file (or paste the sample) and run it in Copilot Chat.</li><li><b>Check the result</b> against “What you should get”. Copilot drafts; you verify and decide.</li><li><b>Earn XP</b> on the checkpoints. Watch your level at the top.</li></ol><div class="note warn" style="margin-top:4px">${I.info}<span>Use only the fictional samples or genuinely non-sensitive material. Follow Tredence’s data rules.</span></div></div></div>`));
+  const tm=el(`<div class="card tight" style="display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap"><div><div class="eyebrow">Your team</div><p class="muted" style="font-size:14px">Exercises show the prompt and sample file for your team. Switch any time to try the other one.</p></div><div class="seg" role="group" aria-label="Your team"><button data-t="rm" aria-pressed="${TEAM()==='rm'}">Resource Management</button><button data-t="mob" aria-pressed="${TEAM()==='mob'}">Global Mobility</button></div></div>`);
+  $$('.seg button',tm).forEach(b=>b.onclick=()=>{S.team=b.dataset.t;save();go('modules',true)});
+  p.append(tm);
+  p.append(el(`<div class="sec-h"><div class="eyebrow">90-minute session map</div><h2>Follow the agenda, block by block</h2><p>Each block has ready-to-run prompts and a checkpoint. Bar widths match the time on the agenda.</p></div>`));
+  p.append(el(`<div class="note">${I.info}<span><b>Green “Live in session” = we do it together today</b>, using the fictional samples provided. Everything marked Optional is practice for after the session. Nobody needs to finish every exercise or quiz today.</span></div>`));
+  const tl=el('<div class="timeline" role="tablist" aria-label="Agenda"></div>');
+  MODS.forEach(m=>{const b=el(`<button class="tl ${m.brk?'brk':''} ${S.mods[m.id]?'done':''}" style="flex:${m.min}" ${m.brk?'disabled':''} aria-current="${m.id===selMod}"><span>${m.time}</span><b>${m.brk?'Break':m.c}</b>${S.mods[m.id]?`<i class="ck">${I.ok}</i>`:''}</button>`);if(!m.brk)b.onclick=()=>{selMod=m.id;go('modules',true);$('#modBody').scrollIntoView({behavior:'smooth',block:'start'})};tl.append(b)});
+  p.append(tl);
+  const m=MODS.find(x=>x.id===selMod);const body=el('<div id="modBody" style="display:grid;gap:22px;scroll-margin-top:130px"></div>');p.append(body);
+  body.append(el(`<div class="mod-h"><div><div class="time">${m.c} · ${m.time}</div><h2 style="margin-top:6px">${m.t}</h2><p class="oc">${m.oc}</p></div><div class="row"><span class="pill">${m.ex.length} exercise${m.ex.length===1?'':'s'}</span><span class="pill">${m.qs.length} checkpoint${m.qs.length===1?'':'s'}</span></div></div>`));
+  if(m.id==='m1')body.append(el(`<div class="note" style="align-items:center;justify-content:space-between;flex-wrap:wrap"><span>${I.info} <b>This block uses Tab 2 · Prompt Lab</b>: the four RTCF blocks, weak vs strong, drills and prompt types. Then come back here for live exercise 1.1.</span><button class="btn sm" data-go="lab">Open Prompt Lab →</button></div>`));
+  if(m.guard){
+    const g=el(`<div class="card" style="display:grid;gap:16px"><div class="sec-h"><div class="eyebrow">Never put into Copilot Chat</div></div><div class="note warn">${I.info}<span><b>In this workshop, use only the fictional samples or pre-approved, anonymised material.</b> Follow Tredence’s data rules whatever licence you have.</span></div><div class="never">${NEVER.map(n=>`<div>${I.x}<span>${n}</span></div>`).join('')}</div><div class="note warn">${I.info}<span><b>Rule of thumb:</b> if you’d hesitate to email it to someone outside your team, don’t paste it into an AI tool. Use placeholders (“Employee A”, “[Country X]”).</span></div><div class="duo"><div class="y"><b>Copilot can</b>Analyse · Summarise · Draft · Suggest</div><div class="n"><b>Copilot must never decide</b>Staffing · Bench release · Visa eligibility · Compliance sign-off · Attrition labels</div></div></div>`);
+    body.append(g);
+  }
+  if(m.wrap){
+    body.append(el(`<div class="grid2"><div class="card" style="display:grid;gap:10px;align-content:start"><div class="eyebrow">Your personal 10-prompt library</div><h3 style="font-size:22px">Save your Monday-morning starter set</h3><p class="muted">Star the prompts you’ll reuse, fill in your usual values, and store them in OneNote, a Word doc or Copilot’s saved prompts.</p><div class="row"><button class="btn" data-go="library">Open Prompt Library</button><button class="btn ghost" data-go="cheat">Cheat Sheet</button></div></div><div class="card" style="display:grid;gap:10px;align-content:start"><div class="eyebrow">Boss round</div><h3 style="font-size:22px">Three questions, 170 XP</h3><p class="muted">Everything from the session in three scenarios. Clear all three for the Champion badge.</p></div></div>`));
+  }
+  const list=el('<div class="exlist"></div>');
+  m.ex.forEach((e,k)=>{
+    const L=LIVE[e.n],firstLive=m.ex.find(x=>LIVE[x.n]);
+    const badge=L?(L.time?'<span class="lv-b time">Live if time</span>':'<span class="lv-b live">Live in session</span>'):'<span class="lv-b opt">Optional · after the session</span>';
+    const d=el(`<details class="ex" ${e===firstLive?'open':''}><summary><span class="num">${e.n}</span><span class="st"><b>${e.t}</b><small>${e.s}</small>${badge}</span><span class="chev">${I.chev}</span></summary><div class="body"></div></details>`);
+    const b=$('.body',d);
+    if(e.dl)b.append(dataBlock());
+    if(e.pre)b.append(note(e.pre));
+    if(L&&L.s)b.append(promptBox(L.s,'Fictional sample input · copy and paste it under the prompt',{noSave:true}));
+    const tk=TEAM()==='mob'&&e.pm?'m':'';
+    if(e.weak){b.append(promptBox(e.weak,'Weak · run this first',{title:'Weak prompt'}));b.append(promptBox(pick(e,'p'),'Strong · run this second and compare',{title:e.t,key:'ex:'+e.n+tk}))}
+    else b.append(promptBox(pick(e,'p'),'Prompt',{title:e.t,key:'ex:'+e.n+tk}));
+    if(e.p2)b.append(promptBox(e.p2,'Companion text prompt',{title:e.t+' (text)',key:'ex2:'+e.n}));
+    if(pick(e,'fu'))b.append(followChips(pick(e,'fu')));
+    if(e.tip)b.append(note('<b>Tip:</b> '+e.tip,true));
+    if(e.fac)b.append(note(e.fac,e.warn));
+    if(L)b.append(el(`<div class="duo"><div class="y"><b>What you should get</b>${esc(TEAM()==='mob'&&L.em?L.em:L.e)}</div><div style="background:var(--accent-soft)"><b>60-second human check</b>${esc(TEAM()==='mob'&&L.cm?L.cm:L.c)}</div></div>`));
+    list.append(d)});
+  if(m.ex.length)body.append(list);
+  body.append(el(`<div class="sec-h"><div class="eyebrow">Checkpoint · ${m.c}</div><h2 style="font-size:24px">${m.wrap?'Boss round':'Lock in what you learned'}</h2></div>`));
+  const qg=el(`<div class="${m.qs.length>2?'grid3':'grid2'}"></div>`);m.qs.forEach(q=>{const c=el('<div class="card tight"></div>');c.append(renderQ(q));qg.append(c)});body.append(qg);
+  const real=MODS.filter(x=>!x.brk),idx=real.indexOf(m);
+  const nav=el(`<div class="modnav"><button class="btn ghost" ${idx===0?'disabled':''} data-mv="-1">← ${idx>0?real[idx-1].c:''}</button><button class="btn" id="mdone">${S.mods[m.id]?'Done '+I.ok:'I did the live exercise · +15 XP'}</button><button class="btn ghost" ${idx===real.length-1?'disabled':''} data-mv="1">${idx<real.length-1?real[idx+1].c:''} →</button></div>`);
+  $('#mdone',nav).onclick=()=>{if(S.mods[m.id])return;S.mods[m.id]=1;save();award('mod:'+m.id,15,m.c+' complete');checkBadges();go('modules',true);$('#modBody').scrollIntoView({block:'start'})};
+  $$('[data-mv]',nav).forEach(b=>b.onclick=()=>{const n=real[idx+ +b.dataset.mv];if(n){selMod=n.id;go('modules',true);$('#modBody').scrollIntoView({behavior:'smooth',block:'start'})}});
+  body.append(nav);
+}
+
+/* ================= RENDER: TOOLS ================= */
+function renderTools(){
+  const p=page();
+  p.append(el(`<div class="sec-h"><div class="eyebrow">Power tools</div><h2>Build, check and justify your prompts</h2><p>Three utilities for the session and after it. Everything runs in your browser; nothing you type is sent anywhere.</p></div>`));
+  p.append(builderCard(),preflightCard(),calcCard());
+}
+function builderCard(){
+  const c=el(`<div class="card" style="display:grid;gap:18px"><div class="sec-h"><div class="eyebrow">Tool 1 · Prompt Builder</div><h2 style="font-size:24px">Fill the four blocks and watch the structure score climb</h2><p>A prompt structure check: it looks for the RTCF parts in your wording. It can’t judge the output’s quality, accuracy or safety. That’s still your review. Score 85+ for the Master Builder badge.</p></div><div class="builder"><div style="display:grid;gap:14px">
+   <div class="fld"><label for="bR"><i style="background:var(--r)">R</i>Role</label><input type="text" id="bR" value="Act as a senior workforce-management analyst."><div class="qp" data-for="bR"><button>Act as a senior workforce-management analyst at a data analytics company.</button><button>Act as a global-mobility operations analyst.</button><button>Act as a data-quality reviewer.</button></div></div>
+   <div class="fld"><label for="bT"><i style="background:var(--t)">T</i>Task</label><input type="text" id="bT" value="Summarise the utilization table below for the Head of Resource Management."><div class="qp" data-for="bT"><button>Analyse</button><button>Summarise</button><button>Compare</button><button>List</button><button>Draft</button></div></div>
+   <div class="fld"><label for="bC"><i style="background:var(--c)">C</i>Context</label><textarea id="bC" rows="3" placeholder="Audience, purpose, tone, constraints, anything Copilot can’t guess"></textarea></div>
+   <div class="fld"><label for="bF"><i style="background:var(--f)">F</i>Format</label><textarea id="bF" rows="2" placeholder="Structure, headings, table, bullets, word count"></textarea></div>
+   <div style="display:grid;gap:6px">${ADDONS.map((a,i)=>`<label class="tog"><input type="checkbox" id="bA${i}"><span>${esc(a)}</span></label>`).join('')}</div>
+  </div><div style="display:grid;gap:14px;align-content:start"><div class="score"><div class="ring" id="bRing" data-v="0"></div><div class="checks" id="bChecks"></div></div><div class="pbox"><div class="pbar"><span class="eyebrow">Your prompt</span><div class="row"><button class="btn sm ghost" id="bEx">Load example</button><button class="btn sm" id="bCopy">${I.copy} Copy</button></div></div><div class="prompt" id="bOut"></div></div></div></div></div>`);
+  const f=id=>$('#'+id,c);
+  $$('.qp',c).forEach(q=>$$('button',q).forEach(b=>b.onclick=()=>{const inp=f(q.dataset.for);if(q.dataset.for==='bT'){inp.value=b.textContent+' '+inp.value.replace(/^(Analyse|Summarise|Compare|List|Draft|Rewrite|Convert|Generate)\s*/i,'')}else inp.value=b.textContent;upd()}));
+  const upd=()=>{
+    const R=f('bR').value.trim(),T=f('bT').value.trim(),C=f('bC').value.trim(),F=f('bF').value.trim();
+    const adds=ADDONS.filter((_,i)=>f('bA'+i).checked);
+    const parts=[R,T,C&&('Context: '+C),F&&('Format: '+F),...adds].filter(Boolean);
+    f('bOut').innerHTML=[[R,'cr'],[T,'ct'],[C&&('Context: '+C),'cc'],[F&&('Format: '+F),'cf']].filter(x=>x[0]).map(([t,k])=>`<span class="${k}" style="border-radius:4px;padding:1px 3px">${esc(t)}</span>`).join('\n')+(adds.length?'\n'+esc(adds.join('\n')):'')||'<span class="muted">Start typing…</span>';
+    const ck=[
+     ['Role names a specific job',/act as|you are/i.test(R)&&R.split(/\s+/).length>=5,15],
+     ['Task starts with a clear verb',/^(draft|write|rewrite|summari[sz]e|convert|generate|create|turn|review|list|build|design|analy[sz]e|compare|categori[sz]e|calculate|identify)\b/i.test(T),15],
+     ['Context names the audience',/audience|for (new|all|first|hiring|people|employees|managers|leaders|joiners)|employees|managers|joiners|readers|candidates|learners|head of|leadership|leaders|stakeholders|attorney/i.test(C),15],
+     ['Context sets tone or constraints',/tone|keep|avoid|don.?t|do not|must|only|exactly|inclusive|plain|never|label|separate/i.test(C),15],
+     ['Format sets a structure',/table|bullet|heading|section|list|steps|columns|subject line|summary/i.test(F),15],
+     ['Format sets a length',/\d+\s*(words?|bullets?|lines?|points?|questions?|rows?)|under \d+|max(imum)? \d+/i.test(F),15],
+     ['Uses a power add-on',adds.length>0,10]
+    ];
+    const sc=ck.reduce((s,x)=>s+(x[1]?x[2]:0),0);
+    const ring=f('bRing');ring.style.setProperty('--p',sc);ring.dataset.v=sc;ring.style.setProperty('--sc',sc>=85?'var(--good)':sc>=50?'var(--gold)':'var(--bad)');
+    f('bChecks').innerHTML=ck.map(x=>`<div class="${x[1]?'ok':''}">${x[1]?I.ok:I.dot}<span>${x[0]}</span></div>`).join('');
+    c._text=parts.join('\n');
+    if(sc>=85&&!S.flags['tool:builder']){award('tool:builder',40,'Prompt Builder score '+sc);checkBadges()}
+  };
+  $$('input,textarea',c).forEach(i=>i.addEventListener('input',upd));
+  f('bEx').onclick=()=>{f('bR').value='Act as a senior workforce-management analyst at a data analytics company.';f('bT').value='Summarise the September utilization table below for leadership.';f('bC').value='Audience is the Head of Resource Management, who has 2 minutes. Separate facts from hypotheses. Never guess missing values; list them.';f('bF').value='A 5-bullet summary, then a table of average utilization by account. Under 200 words.';f('bA2').checked=true;upd()};
+  f('bCopy').onclick=e=>copyText(c._text||'',e.currentTarget);
+  upd();return c;
+}
+const SAMPLE=`Hi team, please review the move for Rohan Mehta (EMP ID 305912) from Chennai to Berlin. His passport number is K1234567, current CTC ₹18,20,000, and his appraisal rating was 2 last cycle. He disclosed a medical condition and needs a dependant visa for his spouse. Contact: +91 98765 43210, rohan.mehta@example.com.
+
+Also, for the bench shortlist: prefer young candidates, ideally male and unmarried, who are a good culture fit and don't need visa sponsorship.`;
+const PII=[
+ ['Email',/[\w.+-]+@[\w-]+\.[\w.]+/g,'[Email]'],
+ ['Employee ID',/\b(?:EMP\s?ID|Employee\s?ID|Emp\s?No\.?|EMP)\s*[:#]?\s*\d{4,}/gi,'[Emp ID]'],
+ ['Passport-style number',/\b[A-Z]\d{7}\b/g,'[ID number]'],
+ ['Immigration detail',/\b(?:dependant visa|visa (?:refusal|rejection)|overstay|immigration status|work permit)\b/gi,'[Immigration detail]'],
+ ['Aadhaar-style number',/\b\d{4}\s\d{4}\s\d{4}\b/g,'[ID number]'],
+ ['PAN-style number',/\b[A-Z]{5}\d{4}[A-Z]\b/g,'[ID number]'],
+ ['Phone number',/(?:\+91[\s-]?)?\b[6-9]\d{4}[\s-]?\d{5}\b/g,'[Phone]'],
+ ['Salary / amount',/(?:₹|Rs\.?|INR)\s?[\d,]+(?:\.\d+)?(?:\s?(?:LPA|lakhs?|crores?))?|\b\d+(?:\.\d+)?\s?LPA\b/gi,'[Amount]'],
+ ['Health detail',/\b(?:medical condition|medical leave|sick leave|surgery|diagnos\w*|pregnan\w*|disabilit\w*|illness|therapy|hospitali[sz]\w*)\b/gi,'[Health detail]'],
+ ['Performance detail',/\b(?:appraisal rating (?:was |of )?\d(?:\/\d)?|rat(?:ed|ing of) \d(?:\/\d)?|PIP|performance improvement plan|underperform\w*)\b/gi,'[Performance detail]'],
+ ['Person’s name',/\b(?!(?:Hi|Hello|Dear|Also|Contact|Data|Analyst|The|Please|Her|His|She|He|New|Team)\b)[A-Z][a-z]{2,} (?!(?:ID|JD)\b)[A-Z][a-z]{2,}\b/g,'[Employee]']
+];
+const BIAS=[
+ [/\byoung\b/gi,'Age-coded','Remove, or state the actual job requirement'],
+ [/\benergetic\b/gi,'Often age-coded','motivated'],
+ [/\b(?:male|female)\b/gi,'Gender used as a criterion','Remove: gender is not a job-related criterion'],
+ [/\b(?:un)?married\b/gi,'Marital status used as a criterion','Remove: not job-related'],
+ [/\bculture fit\b/gi,'Can screen out difference','values alignment / culture add'],
+ [/\b(?:don.?t|do not) need visa sponsorship\b/gi,'Visa status as a screen can be discriminatory','Ask HR or Legal how to handle visa requirements fairly'],
+ [/\blocal candidates?\b/gi,'Can proxy for nationality','Describe the location requirement'],
+ [/\bnative English speakers?\b/gi,'Excludes fluent non-native speakers','fluent in English'],
+ [/\bdigital natives?\b/gi,'Age-coded','comfortable with digital tools'],
+ [/\baggressive\b/gi,'Masculine-coded','proactive / driven']
+];
+function findHits(text,mode){
+  const hits=[];
+  if(mode==='pii')PII.forEach(([k,re,rep])=>{re.lastIndex=0;let m;while((m=re.exec(text))){hits.push({s:m.index,e:m.index+m[0].length,k,rep,v:m[0]})}});
+  else BIAS.forEach(([re,why,alt])=>{re.lastIndex=0;let m;while((m=re.exec(text))){hits.push({s:m.index,e:m.index+m[0].length,k:why,rep:alt,v:m[0]})}});
+  hits.sort((a,b)=>a.s-b.s||b.e-a.e);const out=[];let end=-1;hits.forEach(h=>{if(h.s>=end){out.push(h);end=h.e}});return out;
+}
+function preflightCard(){
+  const c=el(`<div class="card" style="display:grid;gap:16px"><div class="sec-h"><div class="eyebrow">Tool 2 · Pre-flight check · training demo</div><h2 style="font-size:24px">Learn what to look for before you paste</h2><p>A demonstration on fictional text. It highlights common personal-data patterns and unfair selection criteria, then swaps them for placeholders.</p></div>
+  <div class="note warn">${I.info}<span><b>Training demo only.</b> A clean result does <b>not</b> make real employee data safe to paste into any AI tool. Use fictional text here, and follow Tredence’s data rules for real records.</span></div>
+  <textarea id="pfIn" rows="7">${esc(SAMPLE)}</textarea>
+  <div class="row"><button class="btn" id="pfP">Scan for personal data</button><button class="btn" id="pfB" style="background:var(--gold);color:#1b1300">Scan for unfair criteria</button><button class="btn ghost" id="pfA">Replace with placeholders (demo)</button><button class="btn ghost" id="pfR">Restore sample</button></div>
+  <div class="scan-out" id="pfOut"><span class="muted">Results appear here.</span></div>
+  <div class="tbl" id="pfTbl"></div>
+  <p class="muted" style="font-size:12.5px">Pattern matching catches common formats only. It will miss things and flag some false alarms, so always review by hand.</p></div>`);
+  const inp=$('#pfIn',c),out=$('#pfOut',c),tbl=$('#pfTbl',c);
+  const show=(mode)=>{const t=inp.value,h=findHits(t,mode);let html='',i=0;h.forEach(x=>{html+=esc(t.slice(i,x.s))+`<mark class="${mode}" title="${esc(x.k)}">${esc(x.v)}</mark>`;i=x.e});html+=esc(t.slice(i));out.innerHTML=html||'<span class="muted">Nothing to scan.</span>';
+    tbl.innerHTML=h.length?`<table><thead><tr><th>Found</th><th>${mode==='pii'?'Type':'Why it may be a problem'}</th><th>${mode==='pii'?'Replace with':'Suggested alternative'}</th></tr></thead><tbody>${h.map(x=>`<tr><td><mark class="${mode}">${esc(x.v)}</mark></td><td>${esc(x.k)}</td><td>${esc(x.rep)}</td></tr>`).join('')}</tbody></table>`:`<p class="muted">No ${mode==='pii'?'personal-data patterns':'flagged words'} found.</p>`;
+    return h.length};
+  $('#pfP',c).onclick=()=>{const n=show('pii');if(n)award('tool:pii',20,'Personal-data scan run');checkBadges()};
+  $('#pfB',c).onclick=()=>{const n=show('bias');if(n)award('tool:bias',20,'Unfair-criteria scan run');checkBadges()};
+  $('#pfA',c).onclick=()=>{const t=inp.value,h=findHits(t,'pii');const names={};let n=0,r='',i=0;
+    h.forEach(x=>{let rep=x.rep;if(x.k==='Person’s name'){if(!names[x.v])names[x.v]='[Employee '+'ABCDEFGH'[n++]+']';rep=names[x.v]}r+=t.slice(i,x.s)+rep;i=x.e});r+=t.slice(i);
+    out.innerHTML='';out.append(promptBox(r,'Text with placeholders (demo)',{noSave:true}));tbl.innerHTML=`<p class="muted">${h.length} item${h.length===1?'':'s'} replaced. Pattern matching misses things (for example, first names on their own or free-text health details). This is not de-identification.</p>`;if(h.length)award('tool:anon',20,'Placeholder demo run')};
+  $('#pfR',c).onclick=()=>{inp.value=SAMPLE;out.innerHTML='<span class="muted">Results appear here.</span>';tbl.innerHTML=''};
+  return c;
+}
+const TASKS=[
+ {id:'ur',t:'Weekly utilization report',n:4,b:90,a:30},
+ {id:'bn',t:'Bench review & categorisation',n:2,b:120,a:45},
+ {id:'dm',t:'Demand–supply matching',n:4,b:60,a:25},
+ {id:'ex',t:'Executive summary & commentary',n:2,b:90,a:30},
+ {id:'vt',t:'Visa tracker update & alerts',n:4,b:45,a:15},
+ {id:'em',t:'Query emails & follow-ups',n:40,b:10,a:4}
+];
+function calcCard(){
+  const c=el(`<div class="card" style="display:grid;gap:18px"><div class="sec-h"><div class="eyebrow">Tool 3 · Time-back calculator</div><h2 style="font-size:24px">What is this worth to your team?</h2><p>Set your team size and monthly volumes. Minutes per task are editable assumptions, before and after Copilot.</p></div><div class="calc"><div style="display:grid;gap:14px" id="cIn"></div><div style="display:grid;gap:16px;align-content:start"><div class="kpis"><div class="kpi"><b id="kH">0</b><span>hours back per month</span></div><div class="kpi"><b id="kD">0</b><span>working days per month</span></div><div class="kpi"><b id="kY">0</b><span>hours back per year</span></div></div><div class="bars" id="cBars"></div><div class="legend"><span><i style="background:var(--line)"></i>Team hours today</span><span><i style="background:var(--good)"></i>With Copilot</span></div><p class="muted" style="font-size:12.5px">Illustrative estimate, not a measured Tredence result. Every volume and timing above is editable; swap in your own before quoting it.</p></div></div></div>`);
+  const cin=$('#cIn',c);
+  cin.append(el(`<div class="sl"><div class="top"><label for="cTeam">Team size</label><b id="vTeam">37 people</b></div><input type="range" id="cTeam" min="5" max="300" step="1" value="37"></div>`));
+  TASKS.forEach(t=>cin.append(el(`<div class="sl"><div class="top"><label for="c-${t.id}">${t.t}</label><b id="v-${t.id}">${t.n} / person / month</b></div><input type="range" id="c-${t.id}" min="0" max="${t.id==='em'?120:12}" value="${t.n}"><small><input class="minin" type="number" min="0" max="600" id="b-${t.id}" value="${t.b}" aria-label="${t.t}: minutes today"> min today → <input class="minin" type="number" min="0" max="600" id="a-${t.id}" value="${t.a}" aria-label="${t.t}: minutes with Copilot"> min with Copilot (assumptions, edit them)</small></div>`)));
+  const upd=(user)=>{
+    const team=+$('#cTeam',c).value;$('#vTeam',c).textContent=team+' people';
+    let saved=0,max=0;const rows=TASKS.map(t=>{const n=+$('#c-'+t.id,c).value;$('#v-'+t.id,c).textContent=n+' / person / month';const tb=Math.max(0,+$('#b-'+t.id,c).value||0),ta=Math.max(0,Math.min(tb,+$('#a-'+t.id,c).value||0));const b=team*n*tb/60,a=team*n*ta/60;saved+=b-a;max=Math.max(max,b);return{t:t.t,b,a}});
+    $('#kH',c).textContent=Math.round(saved).toLocaleString('en-IN');$('#kD',c).textContent=Math.round(saved/8).toLocaleString('en-IN');$('#kY',c).textContent=Math.round(saved*11).toLocaleString('en-IN');
+    $('#cBars',c).innerHTML=rows.map(r=>`<div class="brow"><span>${r.t}</span><div class="btrack"><div class="bb" style="width:${max?r.b/max*100:0}%"></div><div class="bb after" style="width:${max?r.a/max*100:0}%"></div><span class="bvals">${Math.round(r.b)} h → ${Math.round(r.a)} h</span></div></div>`).join('');
+    if(user){award('tool:roi',15,'Modelled team time savings');checkBadges()}
+  };
+  $$('input',c).forEach(i=>i.addEventListener('input',()=>upd(true)));upd(false);return c;
+}
+
+/* ================= RENDER: LIBRARY ================= */
+let libF='All';
+function renderLibrary(){
+  const p=page();
+  p.append(el(`<div class="sec-h"><div class="eyebrow">Build &amp; Wrap</div><h2>Your 10-prompt Monday-morning starter set</h2><p>Star the ones you’ll reuse, click the yellow brackets to fill in your usual values, and copy. Your edits are kept when you switch tabs or reload. “Copy my prompts” copies your starred and saved prompts with your edits, ready to paste into OneNote or Word. Star 5 for the Curator badge.</p></div>`));
+  p.append(el(`<div class="note">${I.info}<span>Everything is stored in this browser only. Before you leave, use <b>Copy my prompts</b> and paste them somewhere you keep. Clearing browser data or resetting progress removes them.</span></div>`));
+  const bar=el(`<div class="row" style="justify-content:space-between"><div class="filters" role="group" aria-label="Filter prompts"></div><div class="row"><button class="btn ghost sm" id="cpStar">${I.copy} Copy my prompts</button><button class="btn sm" id="cpAll">${I.copy} Copy all 10</button></div></div>`);
+  ['All','Analyse','Report','Verify','Safety','Starred'].forEach(f=>{const b=el(`<button aria-pressed="${f===libF}">${esc(f)}</button>`);b.onclick=()=>{libF=f;go('library',true)};$('.filters',bar).append(b)});
+  p.append(bar);
+  const g=el('<div class="lib"></div>');
+  LIB.filter(x=>libF==='All'||x.c===libF||(libF==='Starred'&&S.stars.includes(x.n))).forEach(x=>{
+    const on=S.stars.includes(x.n);
+    const c=el(`<div class="lc"><div class="lc-h"><b><span class="n">${x.n}</span>${x.t}</b><div class="row"><span class="cat">${x.c}</span><button class="star" aria-pressed="${on}" aria-label="Star ${x.t}">${I.star}</button></div></div></div>`);
+    $('.star',c).onclick=e=>{const b=e.currentTarget;if(S.stars.includes(x.n))S.stars=S.stars.filter(n=>n!==x.n);else S.stars.push(x.n);save();b.setAttribute('aria-pressed',S.stars.includes(x.n));checkBadges()};
+    const pb=promptBox(x.p,'Prompt',{noSave:true,key:'lib:'+x.n});c.append(pb);g.append(c)});
+  if(!g.children.length)g.append(el('<p class="muted">Nothing starred yet. Tap the star on any prompt.</p>'));
+  p.append(g);
+  // Apply the viewer's saved placeholder fills, in order, to a template
+  const withFills=(t,key)=>{const f=(S.fills&&S.fills[key])||[];let k=0;return t.replace(/\[([^\]\n]+)\]/g,m=>{const v=f[k++];return v||m}).replace(/⟦/g,'[').replace(/⟧/g,']')};
+  $('#cpAll',bar).onclick=e=>copyText(LIB.map(x=>`${x.n}. ${x.t}\n${withFills(x.p,'lib:'+x.n)}`).join('\n\n'),e.currentTarget);
+  $('#cpStar',bar).onclick=e=>{const s=LIB.filter(x=>S.stars.includes(x.n));if(!s.length&&!S.saved.length){toast('Star or save a prompt first');return}
+    copyText([...s.map(x=>`${x.n}. ${x.t}\n${withFills(x.p,'lib:'+x.n)}`),...S.saved.map(v=>`${v.t}\n${withFills(v.p,'sv:'+v.at)}`)].join('\n\n'),e.currentTarget)};
+  if(S.saved.length){
+    p.append(el(`<div class="sec-h"><div class="eyebrow">Saved during the session</div><h2 style="font-size:24px">Prompts you saved (${S.saved.length})</h2></div>`));
+    const sg=el('<div class="lib"></div>');
+    S.saved.forEach((s,i)=>{const c=el(`<div class="lc"><div class="lc-h"><b>${esc(s.t)}</b><button class="btn sm ghost">Remove</button></div></div>`);$('.btn',c).onclick=()=>{S.saved.splice(i,1);save();go('library',true)};c.append(promptBox(s.p,'Prompt',{noSave:true,key:'sv:'+s.at}));sg.append(c)});
+    p.append(sg);
+  }
+}
+
+/* ================= RENDER: CHEAT ================= */
+function renderCheat(){
+  const p=page();
+  p.append(el(`<div class="sec-h"><div class="eyebrow">One-page cheat sheet</div><h2>Keep this open next to Copilot</h2></div>`));
+  p.append(el(`<div class="card" style="display:grid;gap:14px"><div class="eyebrow">The formula</div><div class="formula"><span style="background:var(--r-soft);color:var(--r)">Role</span><span class="ar">→</span><span style="background:var(--t-soft);color:var(--t)">Task</span><span class="ar">→</span><span style="background:var(--c-soft);color:var(--c)">Context</span><span class="ar">→</span><span style="background:var(--f-soft);color:var(--f)">Format</span></div></div>`));
+  const tpl=el('<div class="card" style="display:grid;gap:12px"><div class="eyebrow">Blank template</div></div>');
+  tpl.append(promptBox('Act as [ROLE].\n[TASK — one clear verb: draft / rewrite / summarise / convert / generate].\nContext: [audience, purpose, constraints, tone, anything Copilot can\'t guess].\nFormat: [structure, length, headings, table, bullet points, language level].','Template',{title:'Blank RTCF template'}));
+  const two=el('<div class="grid2"></div>');
+  two.append(el(`<div class="card" style="display:grid;gap:14px;align-content:start"><div class="eyebrow">Five habits that fix 80% of bad outputs</div><div class="habits"><div>Say <b>who</b> Copilot is (role) and <b>who</b> the output is for (audience).</div><div>Give the constraints: length, tone, must-include, must-avoid.</div><div>Specify the shape: table, bullets, headings, word count.</div><div>Iterate in the same chat: “shorter”, “more formal”, “add an example”.</div><div>Ask it to flag assumptions and anything to verify.</div></div></div>`));
+  const fu=el(`<div class="card" style="display:grid;gap:14px;align-content:start"><div class="eyebrow">Magic follow-ups · click to copy</div><div class="fu"></div></div>`);
+  FOLLOWS.forEach(f=>{const b=el(`<button class="fuchip">↻ ${esc(f)}</button>`);b.onclick=()=>{copyText(f,null);toast('Follow-up copied')};$('.fu',fu).append(b)});two.append(fu);
+  p.append(tpl,two);
+  p.append(el(`<div style="display:grid;gap:12px"><div class="eyebrow">Three red lines</div><div class="redlines"><div><b>No personal data</b>No personal or confidential data in Copilot Chat, and Tredence’s data rules apply in every tool.</div><div><b>No AI decisions</b>No AI-made people decisions. A human decides.</div><div><b>No unchecked facts</b>Verify dates, numbers, laws and policy references.</div></div></div>`));
+}
+
+/* ================= RENDER: PROGRESS ================= */
+function renderProgress(){
+  if(current!=='progress')return;
+  $('#main').innerHTML='';const p=page();
+  const all=ALLQ(),solved=all.filter(q=>done(q.id)).length,acc=S.right+S.wrong?Math.round(S.right/(S.right+S.wrong)*100):0;
+  const i=lvIdx(S.xp);
+  p.append(el(`<div class="sec-h"><div class="eyebrow">Level &amp; progression</div><h2>Lv ${i+1} · ${LEVELS[i].name}</h2><p>${LEVELS[i].d}</p></div>`));
+  p.append(el(`<div class="statrow"><div class="stat"><b style="color:var(--gold)">${S.xp}</b><span>total XP</span></div><div class="stat"><b>${solved}/${all.length}</b><span>challenges solved</span></div><div class="stat"><b>${acc}%</b><span>answer accuracy</span></div><div class="stat"><b>${Object.keys(S.badges).length}/${BADGES.length}</b><span>badges</span></div></div>`));
+  const two=el('<div class="grid2"></div>');
+  const lad=el('<div class="card" style="display:grid;gap:12px;align-content:start"><div class="eyebrow">Level ladder</div><div class="ladder"></div></div>');
+  LEVELS.slice().reverse().forEach((L,k)=>{const idx=LEVELS.length-1-k;$('.ladder',lad).append(el(`<div class="rung ${S.xp>=L.xp?'got':''} ${idx===i?'cur':''}"><span class="lv">${idx+1}</span><span><b>${L.name}</b><small>${L.d}</small></span><span class="req">${L.xp} XP</span></div>`))});
+  const mp=el('<div class="card" style="display:grid;gap:12px;align-content:start"><div class="eyebrow">Module progress</div><div class="modprog"></div></div>');
+  const groups=[{c:'Lab',t:'Prompt Lab',qs:[...ANATOMY,...TYPES.flatMap(t=>t.qs)]},...MODS.filter(m=>!m.brk).map(m=>({c:m.c,t:m.t,qs:m.qs,id:m.id}))];
+  groups.forEach(g=>{const d=g.qs.filter(q=>done(q.id)).length,pct=g.qs.length?d/g.qs.length*100:0;$('.modprog',mp).append(el(`<div class="mp"><span class="c">${g.c}</span><span><span style="font-size:13.5px;display:block">${g.t}${g.id&&S.mods[g.id]?' <span style="color:var(--good)">· complete</span>':''}</span><span class="t"><i style="width:${pct}%"></i></span></span><span class="v">${d}/${g.qs.length}</span></div>`))});
+  two.append(lad,mp);p.append(two);
+  const bd=el('<div class="card" style="display:grid;gap:14px"><div class="eyebrow">Badges · +25 XP each</div><div class="badges"></div></div>');
+  BADGES.forEach(b=>$('.badges',bd).append(el(`<div class="bdg ${S.badges[b.id]?'got':''}"><span class="med">${I.medal}</span><b>${b.nm}</b><small>${b.d}</small></div>`)));
+  p.append(bd);
+  const cert=el(`<div class="cert"><div class="eyebrow">My session progress card · self-reported, not a certification</div><h3>Copilot for Workforce &amp; Mobility Ops · Day 1</h3><p class="muted">Progress in the practice companion for</p><div class="nm" id="certName">${esc(S.name||'Your name')}</div><p>practice level <b>Lv ${i+1} · ${LEVELS[i].name}</b> with <b>${S.xp} XP</b> and <b>${Object.keys(S.badges).length}</b> badge${Object.keys(S.badges).length===1?'':'s'}.</p><p class="muted" style="font-size:13px">${new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})} · DevPro Academy × UNext for Tredence</p><div class="row" style="justify-content:center;max-width:360px;width:100%"><input type="text" id="nameIn" placeholder="Type your name for the certificate" value="${esc(S.name)}" aria-label="Your name"></div><p class="muted" style="font-size:12.5px">Take a screenshot to share it.</p></div>`);
+  $('#nameIn',cert).addEventListener('input',e=>{S.name=e.target.value;save();$('#certName').textContent=S.name||'Your name'});
+  p.append(cert);
+  const rs=el(`<div class="row" style="justify-content:flex-end"><button class="btn ghost sm" id="rst">Reset my progress</button></div>`);
+  $('#rst',rs).onclick=()=>{rs.innerHTML='<span class="muted">This clears XP, answers, badges and saved prompts in this browser.</span><button class="btn sm" id="rsY" style="background:var(--bad);color:#fff">Yes, reset</button><button class="btn ghost sm" id="rsN">Cancel</button>';$('#rsY').onclick=()=>{S=fresh();save();hud();go('progress')};$('#rsN').onclick=()=>go('progress',true)};
+  p.append(rs);
+}
+
+/* ================= BOOT ================= */
+buildTabs();
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g){e.preventDefault();go(g.dataset.go)}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#lvup').hidden=true});
+const start=(location.hash||'').slice(1);
+hud();go(TABS.some(t=>t[0]===start)?start:'modules',true);
+</script>
+</body>
+</html>
